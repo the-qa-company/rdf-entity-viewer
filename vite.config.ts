@@ -5,6 +5,7 @@ import tsconfigPaths from 'vite-tsconfig-paths'
 import dns from 'dns'
 import dts from 'vite-plugin-dts'
 import path, { resolve } from 'path'
+import autoExternal from 'rollup-plugin-auto-external'
 
 // Used to make Vite use localhost instead of 127.0.0.1
 dns.setDefaultResultOrder('verbatim')
@@ -29,7 +30,8 @@ export default defineConfig({
     tsconfigPaths(),
     eslint(),
     dts({ insertTypesEntry: true }),
-    removePublicFolderFromBuild()
+    removePublicFolderFromBuild(),
+    autoExternal()
   ],
   resolve: {
     alias: {
@@ -41,9 +43,6 @@ export default defineConfig({
       entry: resolve(__dirname, 'src/lib/index.ts'),
       name: 'RdfEntityViewer',
       formats: ['es', 'umd']
-    },
-    rollupOptions: {
-      external: ['react', '@mui/material']
-    } 
+    }
   },
 })

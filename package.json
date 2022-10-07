@@ -1,7 +1,14 @@
 {
   "name": "rdf-entity-viewer",
   "type": "module",
-  "keywords": ["rdf", "entity", "viewer", "linked data", "graph", "triple"],
+  "keywords": [
+    "rdf",
+    "entity",
+    "viewer",
+    "linked data",
+    "graph",
+    "triple"
+  ],
   "author": {
     "name": "The QA Company",
     "email": "info@qanswer.eu",
@@ -12,7 +19,7 @@
     "type": "git",
     "url": "https://github.com/the-qa-company/rdf-entity-viewer"
   },
-  "version": "0.0.8",
+  "version": "0.0.9",
   "files": [
     "dist"
   ],
@@ -27,8 +34,8 @@
     "postpublish": "./scripts/restore-package.sh"
   },
   "peerDependencies": {
-    "react": "^18.2.0",
-    "@mui/material": "^5.10.8"
+    "@mui/material": "^5.10.8",
+    "react": "^18.2.0"
   },
   "devDependencies": {
     "@emotion/react": "^11.10.4",
@@ -52,6 +59,7 @@
     "json": "^11.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "rollup-plugin-auto-external": "^2.0.0",
     "typescript": "^4.6.4",
     "vite": "^3.1.0",
     "vite-plugin-dts": "^1.6.4",
