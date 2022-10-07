@@ -1,6 +1,7 @@
 {
   "name": "rdf-entity-viewer",
   "type": "module",
+  "keywords": ["rdf", "entity", "viewer", "linked data", "graph", "triple"],
   "author": {
     "name": "The QA Company",
     "email": "info@qanswer.eu",
@@ -11,7 +12,7 @@
     "type": "git",
     "url": "https://github.com/the-qa-company/rdf-entity-viewer"
   },
-  "version": "0.0.7",
+  "version": "0.0.8",
   "files": [
     "dist"
   ],
