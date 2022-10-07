@@ -25,9 +25,7 @@
     "postpublish": "./scripts/restore-package.sh"
   },
   "peerDependencies": {
-    "react": "^18.2.0"
-  },
-  "dependencies": {
+    "react": "^18.2.0",
     "@mui/material": "^5.10.8"
   },
   "devDependencies": {
