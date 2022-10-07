@@ -41,6 +41,9 @@ export default defineConfig({
       entry: resolve(__dirname, 'src/lib/index.ts'),
       name: 'RdfEntityViewer',
       formats: ['es', 'umd']
-    }
+    },
+    rollupOptions: {
+      external: ['react', '@mui/material']
+    } 
   },
 })
