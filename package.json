@@ -16,6 +16,7 @@
   ],
   "main": "./dist/rdf-entity-viewer.umd.cjs",
   "module": "./dist/rdf-entity-viewer.js",
+  "types": "./dist/index.d.ts",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
