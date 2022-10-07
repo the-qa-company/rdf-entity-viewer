@@ -6,6 +6,10 @@
     "email": "info@qanswer.eu",
     "homepage": "https://the-qa-company.com"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/the-qa-company/rdf-entity-viewer"
+  },
   "version": "0.0.0",
   "files": [
     "dist"
