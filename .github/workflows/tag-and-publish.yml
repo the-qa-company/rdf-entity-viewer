@@ -7,7 +7,7 @@ env:
   npm_config_yes: true
 
 jobs:
-  tag:
+  tag-and-publish:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
