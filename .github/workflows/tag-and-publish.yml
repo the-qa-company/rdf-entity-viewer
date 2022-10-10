@@ -35,6 +35,7 @@ jobs:
           git tag "v${{ steps.read-version.outputs.version }}"
           git push --tags
       - name: Publish to NPM
+        if: ${{ steps.check-tag.outputs.exists == 'false' }}
         run: |
           npm install
           npm publish
