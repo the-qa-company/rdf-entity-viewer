@@ -22,6 +22,7 @@ jobs:
       - name: Read version
         id: "read-version"
         run: echo "::set-output name=version::$(cat package.json | npx json version)"
+      - run: "echo \"Version found in package.json: ${{ steps.read-version.outputs.version }}\""
       - name: Check if tag exists
         id: "check-tag"
         run: echo "::set-output name=exists::$([[ `git tag -l "v${{ steps.read-version.outputs.version }}"` ]] && echo true || echo false)"
