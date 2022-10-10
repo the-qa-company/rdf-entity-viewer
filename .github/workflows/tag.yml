@@ -1,0 +1,34 @@
+on:
+  push:
+    branches:
+      - "main"
+
+env:
+  npm_config_yes: true
+
+jobs:
+  tag:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Git user
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          registry-url: 'https://registry.npmjs.org'
+      - name: Read version
+        id: "read-version"
+        run: |
+          echo "::set-output name=version::$(cat package.json | npx json version)"
+      - name: Check if tag exists
+        id: "check-tag"
+        run: |
+          echo "::set-output name=exists::$([[ git tag -l "v${{ steps.read-version.outputs.version }}" ]] && echo true || echo false)"
+      - name: Create tag
+        if: steps.check-tag.outputs.exists == 'false'
+        run: |
+          git tag "v${{ steps.read-version.outputs.version }}"
+          git push --tags      
