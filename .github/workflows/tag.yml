@@ -29,8 +29,10 @@ jobs:
         id: "check-tag"
         run: echo "::set-output name=exists::$([[ `git tag -l "v${{ steps.read-version.outputs.version }}"` ]] && echo true || echo false)"
       - run: "echo \"Tag exists: ${{ steps.check-tag.outputs.exists }}\""
-      - name: Create tag
+      - name: Create and push tag
         if: ${{ steps.check-tag.outputs.exists == 'false' }}
         run: |
           git tag "v${{ steps.read-version.outputs.version }}"
           git push --tags
+        env:
+          GITHUB_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
