@@ -21,14 +21,12 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
       - name: Read version
         id: "read-version"
-        run: |
-          echo "::set-output name=version::$(cat package.json | npx json version)"
+        run: echo "::set-output name=version::$(cat package.json | npx json version)"
       - name: Check if tag exists
         id: "check-tag"
-        run: |
-          echo "::set-output name=exists::$([[ `git tag -l "v${{ steps.read-version.outputs.version }}"` ]] && echo true || echo false)"
+        run: echo "::set-output name=exists::$([[ `git tag -l "v${{ steps.read-version.outputs.version }}"` ]] && echo true || echo false)"
       - name: Create tag
         if: steps.check-tag.outputs.exists == 'false'
         run: |
           git tag "v${{ steps.read-version.outputs.version }}"
-          git push --tags      
+          git push --tags
