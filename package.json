@@ -19,7 +19,7 @@
     "type": "git",
     "url": "https://github.com/the-qa-company/rdf-entity-viewer"
   },
-  "version": "0.0.15",
+  "version": "0.0.16",
   "files": [
     "dist"
   ],
@@ -36,6 +36,8 @@
   "peerDependencies": {
     "@mui/icons-material": "^5.10.6",
     "@mui/material": "^5.10.8",
+    "@emotion/react": "^11.10.4",
+    "@emotion/styled": "^11.10.4",
     "react": "^18.2.0"
   },
   "devDependencies": {
@@ -71,3 +73,4 @@
     "vite-tsconfig-paths": "^3.5.1"
   }
 }
+
