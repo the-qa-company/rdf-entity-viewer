@@ -7,4 +7,4 @@
 cp package.json package.json.bak
 
 # Edit package.json
-npx json -I -f package.json -e "this.devDependencies = {}"
+npx json -I -f package.json -e "this.devDependencies = {}; this.scripts = {};"
