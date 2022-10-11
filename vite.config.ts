@@ -40,7 +40,7 @@ export default defineConfig({
   },
   build: {
     lib: {
-      entry: resolve(__dirname, 'src/lib/index.ts'),
+      entry: resolve(__dirname, 'src/lib/RdfEntityViewer.tsx'),
       name: 'RdfEntityViewer',
       formats: ['es', 'umd']
     }
