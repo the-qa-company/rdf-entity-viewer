@@ -39,11 +39,6 @@ export default defineConfig({
     }
   },
   build: {
-    rollupOptions: {
-      external: [
-        /@mui\/.*/,
-      ],
-    },
     lib: {
       entry: resolve(__dirname, 'src/lib/RdfEntityViewer.tsx'),
       name: 'RdfEntityViewer',
