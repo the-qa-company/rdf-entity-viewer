@@ -5,8 +5,8 @@ import tsconfigPaths from 'vite-tsconfig-paths'
 import dns from 'dns'
 import dts from 'vite-plugin-dts'
 import path, { resolve } from 'path'
-import autoExternal from 'rollup-plugin-auto-external'
 import { nodeResolve } from '@rollup/plugin-node-resolve'
+import fs from 'fs'
 
 // Used to make Vite use localhost instead of 127.0.0.1
 dns.setDefaultResultOrder('verbatim')
@@ -24,6 +24,36 @@ function removePublicFolderFromBuild (): PluginOption {
   }
 }
 
+function autoExternals (): PluginOption {
+  return {
+    name: 'auto-externals',
+    apply: 'build',
+    enforce: 'pre',
+    config(config) {
+      const packageFile = JSON.parse((fs.readFileSync(resolve(config.root ?? './', 'package.json')).toString()))
+      const deps = [
+        ...Object.keys(packageFile.dependencies || {}),
+        ...Object.keys(packageFile.peerDependencies || {}),
+        ...Object.keys(packageFile.devDependencies || {}),
+      ]
+      const prevExternal = config.build?.rollupOptions?.external
+      config.build = config.build || {}
+      config.build.rollupOptions = config.build.rollupOptions || {}
+      config.build.rollupOptions.external = (...args) => {
+        const source = args[0]
+        if (typeof prevExternal === 'function' && prevExternal(...args)) return true
+        if (Array.isArray(prevExternal)) {
+          for (const x of prevExternal) {
+            if (typeof x === 'string' && x === source) return true
+            if (x instanceof RegExp && x.test(source)) return true
+          }
+        }
+        return deps.some(dep => source === dep || source.startsWith(`${dep}/`))
+      }
+    },
+  }
+}
+
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
@@ -31,9 +61,9 @@ export default defineConfig({
     tsconfigPaths(),
     eslint(),
     dts({ insertTypesEntry: true }),
+    autoExternals(),
     removePublicFolderFromBuild(),
-    nodeResolve(),
-    autoExternal()
+    nodeResolve()
   ],
   resolve: {
     alias: {

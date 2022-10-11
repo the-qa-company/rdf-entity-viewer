@@ -19,7 +19,7 @@
     "type": "git",
     "url": "https://github.com/the-qa-company/rdf-entity-viewer"
   },
-  "version": "0.0.23",
+  "version": "0.0.24",
   "files": [
     "dist"
   ],
@@ -50,7 +50,6 @@
     "@types/node": "^18.8.2",
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
-    "@types/rollup-plugin-auto-external": "^2.0.2",
     "@typescript-eslint/eslint-plugin": "^5.39.0",
     "@vitejs/plugin-react": "^2.1.0",
     "eslint": "^8.24.0",
@@ -66,7 +65,6 @@
     "json": "^11.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "rollup-plugin-auto-external": "^2.0.0",
     "sass": "^1.55.0",
     "typescript": "^4.6.4",
     "vite": "^3.1.0",

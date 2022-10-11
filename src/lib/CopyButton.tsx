@@ -1,6 +1,6 @@
 import React from 'react'
 import { IconButton, Tooltip } from '@mui/material'
-import { ContentCopy as ContentCopyIcon } from '@mui/icons-material'
+import ContentCopyIcon from '@mui/icons-material/ContentCopy'
 
 interface Props {
   value: string
