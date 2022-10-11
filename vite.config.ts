@@ -31,7 +31,7 @@ export default defineConfig({
     eslint(),
     dts({ insertTypesEntry: true }),
     removePublicFolderFromBuild(),
-    autoExternal()
+    autoExternal({ builtins: true, dependencies: true, devDependencies: true, peerDependencies: true }),
   ],
   resolve: {
     alias: {
@@ -39,6 +39,12 @@ export default defineConfig({
     }
   },
   build: {
+    rollupOptions: {
+      external: [
+        'react/jsx-runtime',
+        /@mui\/.*/,
+      ],
+    },
     lib: {
       entry: resolve(__dirname, 'src/lib/RdfEntityViewer.tsx'),
       name: 'RdfEntityViewer',

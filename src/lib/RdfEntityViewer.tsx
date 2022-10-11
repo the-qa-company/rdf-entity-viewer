@@ -54,7 +54,7 @@ function RdfEntityViewer (props: Props): JSX.Element {
     if (labelProp !== undefined) return labelProp
     // TODO: use the label from the data
     return iri
-  }, [])
+  }, [labelProp, iri])
 
   const skeletonWidth = useMemo(() => Math.round(Math.random() * 200) + 240, [])
 
