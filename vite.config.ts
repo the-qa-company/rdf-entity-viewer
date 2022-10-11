@@ -6,6 +6,7 @@ import dns from 'dns'
 import dts from 'vite-plugin-dts'
 import path, { resolve } from 'path'
 import autoExternal from 'rollup-plugin-auto-external'
+import { nodeResolve } from '@rollup/plugin-node-resolve'
 
 // Used to make Vite use localhost instead of 127.0.0.1
 dns.setDefaultResultOrder('verbatim')
@@ -31,7 +32,9 @@ export default defineConfig({
     eslint(),
     dts({ insertTypesEntry: true }),
     removePublicFolderFromBuild(),
-    autoExternal({ builtins: true, dependencies: true, devDependencies: true, peerDependencies: true }),
+    nodeResolve(),
+    autoExternal(),
+
   ],
   resolve: {
     alias: {
@@ -39,6 +42,9 @@ export default defineConfig({
     }
   },
   build: {
+    rollupOptions: {
+    external: [/@mui\/.*/]
+    },
     lib: {
       entry: resolve(__dirname, 'src/lib/RdfEntityViewer.tsx'),
       name: 'RdfEntityViewer',

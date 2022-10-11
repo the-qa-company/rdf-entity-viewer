@@ -19,7 +19,7 @@
     "type": "git",
     "url": "https://github.com/the-qa-company/rdf-entity-viewer"
   },
-  "version": "0.0.21",
+  "version": "0.0.22",
   "files": [
     "dist"
   ],
@@ -34,10 +34,10 @@
     "postpublish": "./scripts/restore-package.sh"
   },
   "peerDependencies": {
-    "@mui/icons-material": "^5.10.6",
-    "@mui/material": "^5.10.8",
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
+    "@mui/icons-material": "^5.10.6",
+    "@mui/material": "^5.10.8",
     "react": "^18.2.0"
   },
   "devDependencies": {
@@ -46,9 +46,11 @@
     "@fontsource/roboto": "^4.5.8",
     "@mui/icons-material": "^5.10.6",
     "@mui/material": "^5.10.8",
+    "@rollup/plugin-node-resolve": "^15.0.0",
     "@types/node": "^18.8.2",
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
+    "@types/rollup-plugin-auto-external": "^2.0.2",
     "@typescript-eslint/eslint-plugin": "^5.39.0",
     "@vitejs/plugin-react": "^2.1.0",
     "eslint": "^8.24.0",
@@ -73,4 +75,3 @@
     "vite-tsconfig-paths": "^3.5.1"
   }
 }
-
