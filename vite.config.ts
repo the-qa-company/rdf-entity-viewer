@@ -33,8 +33,7 @@ export default defineConfig({
     dts({ insertTypesEntry: true }),
     removePublicFolderFromBuild(),
     nodeResolve(),
-    autoExternal(),
-
+    autoExternal()
   ],
   resolve: {
     alias: {
@@ -42,9 +41,6 @@ export default defineConfig({
     }
   },
   build: {
-    rollupOptions: {
-    external: [/@mui\/.*/]
-    },
     lib: {
       entry: resolve(__dirname, 'src/lib/RdfEntityViewer.tsx'),
       name: 'RdfEntityViewer',
