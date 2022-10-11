@@ -16,7 +16,8 @@
         "project": "./tsconfig.json"
     },
     "plugins": [
-        "react"
+        "react",
+        "only-warn"
     ],
     "rules": {
         "react/react-in-jsx-scope": "off"

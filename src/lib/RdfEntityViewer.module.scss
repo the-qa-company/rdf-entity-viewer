@@ -1,0 +1,39 @@
+$height: 100px;
+
+.clickable {
+  cursor: pointer;
+}
+
+.container, .dialog {
+  display: flex;
+}
+
+.dialog {
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  min-height: $height;
+  justify-content: center;
+  .innerContainer {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    .header {
+      height: $height;
+      .title {
+        padding: 20px;
+        padding-bottom: 30px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+      .skeletons {
+        display: flex;
+        gap: 10px;
+      }
+      height: max-content;
+    }
+  }
+}
