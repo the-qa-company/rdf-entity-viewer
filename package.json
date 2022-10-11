@@ -19,13 +19,16 @@
     "type": "git",
     "url": "https://github.com/the-qa-company/rdf-entity-viewer"
   },
-  "version": "0.0.16",
+  "version": "0.0.17",
   "files": [
     "dist"
   ],
   "main": "./dist/rdf-entity-viewer.umd.cjs",
   "module": "./dist/rdf-entity-viewer.js",
   "types": "./dist/index.d.ts",
+  "exports": {
+    "./style.css": "./dist/style.css"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
