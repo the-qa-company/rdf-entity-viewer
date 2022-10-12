@@ -72,12 +72,11 @@ function App (): JSX.Element {
         helperText={userInputBadFormat ? 'Invalid format' : undefined}
       />
       <RdfEntityViewer
-        iri={entity === undefined ? undefined : `https://www.wikidata.org/wiki/${entity}`}
+        iri={entity === undefined ? undefined : `http://www.wikidata.org/entity/${entity}`}
         data={data}
         loading={loading}
         error={error}
         forceExpanded
-        bodyLoading
       />
     </Box>
   )

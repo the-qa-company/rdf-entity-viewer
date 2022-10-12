@@ -6,10 +6,12 @@ import { RdfJson } from './rdf-json'
 import { mergeClasses } from './common-hooks'
 import CopyButton from './CopyButton'
 import DefaultLink from './DefaultLink'
+import Body from './Body'
+import { ViewerContext, ViewerContextI } from './viewer-context'
 
 import s from './RdfEntityViewer.module.scss'
 
-interface Props extends React.ComponentProps<typeof Paper> {
+export interface Props extends React.ComponentProps<typeof Paper> {
   /** The IRI of the main entity */
   iri?: string
   /** Force the label of the main entity, useful when data is not yet available */
@@ -71,6 +73,7 @@ function RdfEntityViewer (props: Props): JSX.Element {
   }, [forceExpanded, loading, aDialogIsShown])
 
   const showHeaderTitle = useMemo(() => iri !== undefined && !aDialogIsShown && !loading, [iri, aDialogIsShown, loading])
+  const mountBody = useMemo(() => !bodyLoading && iri !== undefined && data !== undefined, [bodyLoading, iri, data])
 
   // Call onExpand when the component is expanded
   useEffect(() => {
@@ -85,49 +88,59 @@ function RdfEntityViewer (props: Props): JSX.Element {
 
   const skeletonWidth = useMemo(() => Math.round(Math.random() * 200) + 240, [])
 
+  const contextValue: ViewerContextI = {
+    data,
+    iri
+  }
+
   return (
-    <Paper className={mergeClasses(s.container, otherProps.className)} {...otherProps}>
-      <Box className={s.innerContainer}>
+    <ViewerContext.Provider value={contextValue}>
+      <Paper className={mergeClasses(s.container, otherProps.className)} {...otherProps}>
+        <Box className={s.innerContainer}>
 
-        {/* Header */}
-        <Box
-          className={mergeClasses(s.header, isHeaderClickable && s.clickable)}
-          onClick={() => isHeaderClickable && setUserExpanded(x => !x)}
-        >
-          <Typography variant='h4' className={s.title}>
-            {showHeaderTitle && (
-              <>
-                <CopyButton bigger value={iri!} title='Copy IRI' />
-                <LinkComponent href={iri!}>{label ?? iri!}</LinkComponent>
-              </>
-            )}
-            {loading && (
-              <Box className={s.skeletons}>
-                <Skeleton width={28} />
-                <Skeleton width={skeletonWidth} />
-              </Box>
-            )}
-            {aDialogIsShown && (
-              <Box className={s.dialog}>
-                <Alert severity='error'>{errorProp ?? 'No data'}</Alert>
-              </Box>
-            )}
-          </Typography>
-        </Box>
-
-        {/* Body */}
-        <Collapse in={expanded}>
-          <Box className={s.body}>
-            {bodyLoading && (
-              <Box className={s.skeletonsVertical}>
-                {Array.from({ length: 5 }).map((_, i) => <Skeleton key={i} height={28} />)}
-              </Box>
-            )}
+          {/* Header */}
+          <Box
+            className={mergeClasses(s.header, isHeaderClickable && s.clickable)}
+            onClick={() => isHeaderClickable && setUserExpanded(x => !x)}
+          >
+            <Typography variant='h4' className={s.title}>
+              {showHeaderTitle && (
+                <>
+                  <CopyButton bigger value={iri!} title='Copy IRI' />
+                  <LinkComponent href={iri!}>{label ?? iri!}</LinkComponent>
+                </>
+              )}
+              {loading && (
+                <Box className={s.skeletons}>
+                  <Skeleton width={28} />
+                  <Skeleton width={skeletonWidth} />
+                </Box>
+              )}
+              {aDialogIsShown && (
+                <Box className={s.dialog}>
+                  <Alert severity='error'>{errorProp ?? 'No data'}</Alert>
+                </Box>
+              )}
+            </Typography>
           </Box>
-        </Collapse>
 
-      </Box>
-    </Paper>
+          {/* Body */}
+          <Collapse in={expanded}>
+            <Box className={s.body}>
+              {bodyLoading && (
+                <Box className={s.skeletonsVertical}>
+                  {Array.from({ length: 5 }).map((_, i) => <Skeleton key={i} height={28} />)}
+                </Box>
+              )}
+              {mountBody && (
+                <Body />
+              )}
+            </Box>
+          </Collapse>
+
+        </Box>
+      </Paper>
+    </ViewerContext.Provider>
   )
 }
 
