@@ -76,6 +76,7 @@ function App (): JSX.Element {
         data={data}
         loading={loading}
         error={error}
+        forceExpanded
       />
     </Box>
   )

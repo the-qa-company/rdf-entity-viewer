@@ -37,7 +37,7 @@ function RdfEntityViewer (props: Props): JSX.Element {
     data,
     forceExpanded = false,
     label: labelProp,
-    loading = false,
+    loading: loadingProp = false,
     onExpand,
     LinkComponent = DefaultLink,
     error: errorProp,
@@ -45,14 +45,29 @@ function RdfEntityViewer (props: Props): JSX.Element {
   } = props
 
   const [userExpanded, setUserExpanded] = useState(false)
-  const expanded = useMemo(() => userExpanded || forceExpanded, [userExpanded, forceExpanded])
+
+  const error = useMemo(() => errorProp !== undefined, [errorProp])
+  const loading = useMemo(() => loadingProp && !error, [loadingProp, error])
+
+  const aDialogIsShown = useMemo(() => {
+    const noData = (!loading && iri === undefined)
+    return noData || error
+  }, [loading, iri, error])
+
+  const expanded = useMemo(() => {
+    if (loading) return false
+    if (aDialogIsShown) return false
+    return userExpanded || forceExpanded
+  }, [loading, aDialogIsShown, userExpanded, forceExpanded])
+
   const isHeaderClickable = useMemo(() => {
     if (forceExpanded) return false
     if (loading) return false
-    if (errorProp !== undefined) return false
-    if (!loading && iri === undefined) return false
+    if (aDialogIsShown) return false
     return true
-  }, [forceExpanded, loading, errorProp])
+  }, [forceExpanded, loading, aDialogIsShown])
+
+  const showHeaderTitle = useMemo(() => iri !== undefined && !aDialogIsShown && !loading, [iri, aDialogIsShown, loading])
 
   // Call onExpand when the component is expanded
   useEffect(() => {
@@ -77,19 +92,19 @@ function RdfEntityViewer (props: Props): JSX.Element {
           onClick={() => isHeaderClickable && setUserExpanded(x => !x)}
         >
           <Typography variant='h4' className={s.title}>
-            {(iri !== undefined && errorProp === undefined && !loading) && (
+            {showHeaderTitle && (
               <>
-                <CopyButton bigger value={iri} title='Copy IRI' />
-                <LinkComponent href={iri}>{label ?? iri}</LinkComponent>
+                <CopyButton bigger value={iri!} title='Copy IRI' />
+                <LinkComponent href={iri!}>{label ?? iri!}</LinkComponent>
               </>
             )}
-            {(loading && errorProp === undefined) && (
+            {loading && (
               <Box className={s.skeletons}>
                 <Skeleton width={28} />
                 <Skeleton width={skeletonWidth} />
               </Box>
             )}
-            {((!loading && iri === undefined) || errorProp !== undefined) && (
+            {aDialogIsShown && (
               <Box className={s.dialog}>
                 <Alert severity='error'>{errorProp ?? 'No data'}</Alert>
               </Box>
