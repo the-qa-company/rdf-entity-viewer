@@ -24,6 +24,8 @@ interface Props extends React.ComponentProps<typeof Paper> {
   onExpand?: () => void
   /** Overwrite the link component used to render links, useful when you want to use react-router */
   LinkComponent?: typeof DefaultLink
+  /** Define an error to be printed */
+  error?: string
 }
 
 /**
@@ -38,12 +40,19 @@ function RdfEntityViewer (props: Props): JSX.Element {
     loading = false,
     onExpand,
     LinkComponent = DefaultLink,
+    error: errorProp,
     ...otherProps
   } = props
 
   const [userExpanded, setUserExpanded] = useState(false)
   const expanded = useMemo(() => userExpanded || forceExpanded, [userExpanded, forceExpanded])
-  const isHeaderClickable = useMemo(() => !forceExpanded, [forceExpanded])
+  const isHeaderClickable = useMemo(() => {
+    if (forceExpanded) return false
+    if (loading) return false
+    if (errorProp !== undefined) return false
+    if (!loading && iri === undefined) return false
+    return true
+  }, [forceExpanded, loading, errorProp])
 
   // Call onExpand when the component is expanded
   useEffect(() => {
@@ -61,38 +70,45 @@ function RdfEntityViewer (props: Props): JSX.Element {
   return (
     <Paper className={mergeClasses(s.container, otherProps.className)} {...otherProps}>
       <Box className={s.innerContainer}>
+
+        {/* Header */}
         <Box
           className={mergeClasses(s.header, isHeaderClickable && s.clickable)}
-          onClick={() => setUserExpanded(x => !x)}
+          onClick={() => isHeaderClickable && setUserExpanded(x => !x)}
         >
           <Typography variant='h4' className={s.title}>
-            {iri !== undefined && (
+            {(iri !== undefined && errorProp === undefined && !loading) && (
               <>
                 <CopyButton bigger value={iri} title='Copy IRI' />
                 <LinkComponent href={iri}>{label ?? iri}</LinkComponent>
               </>
             )}
-            {loading && (
+            {(loading && errorProp === undefined) && (
               <Box className={s.skeletons}>
                 <Skeleton width={28} />
                 <Skeleton width={skeletonWidth} />
               </Box>
             )}
-            {!loading && iri === undefined && (
+            {((!loading && iri === undefined) || errorProp !== undefined) && (
               <Box className={s.dialog}>
-                <Alert severity='error'>No data</Alert>
+                <Alert severity='error'>{errorProp ?? 'No data'}</Alert>
               </Box>
             )}
           </Typography>
         </Box>
+
+        {/* Body */}
         <Collapse in={expanded}>
           <Box sx={{ padding: '20px' }}>
             hello world
           </Box>
         </Collapse>
+
       </Box>
     </Paper>
   )
 }
 
 export default RdfEntityViewer
+
+export type { RdfJson }
