@@ -20,6 +20,8 @@ interface Props extends React.ComponentProps<typeof Paper> {
   forceExpanded?: boolean
   /** Show a loader */
   loading?: boolean
+  /** Show a loader only for the body (not the title, a.k.a. the main IRI) */
+  bodyLoading?: boolean
   /** Called when the component is expanded, useful to know when to make a request */
   onExpand?: () => void
   /** Overwrite the link component used to render links, useful when you want to use react-router */
@@ -38,6 +40,7 @@ function RdfEntityViewer (props: Props): JSX.Element {
     forceExpanded = false,
     label: labelProp,
     loading: loadingProp = false,
+    bodyLoading = false,
     onExpand,
     LinkComponent = DefaultLink,
     error: errorProp,
@@ -114,8 +117,12 @@ function RdfEntityViewer (props: Props): JSX.Element {
 
         {/* Body */}
         <Collapse in={expanded}>
-          <Box sx={{ padding: '20px' }}>
-            hello world
+          <Box className={s.body}>
+            {bodyLoading && (
+              <Box className={s.skeletonsVertical}>
+                {Array.from({ length: 5 }).map((_, i) => <Skeleton key={i} height={28} />)}
+              </Box>
+            )}
           </Box>
         </Collapse>
 

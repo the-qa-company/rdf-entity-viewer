@@ -22,6 +22,7 @@ $height: 100px;
     height: 100%;
     display: flex;
     flex-direction: column;
+
     .header {
       height: $height;
       .title {
@@ -31,11 +32,19 @@ $height: 100px;
         overflow: hidden;
         white-space: nowrap;
       }
-      .skeletons {
+      .skeletons, .skeletonsVertical {
         display: flex;
         gap: 10px;
       }
+      .skeletonsVertical {
+        flex-direction: column;
+      }
       height: max-content;
+    }
+
+    .body {
+      padding: 20px;
+      padding-top: 0;
     }
   }
 }
