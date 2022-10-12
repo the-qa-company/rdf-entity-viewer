@@ -1,5 +1,47 @@
 # rdf-entity-viewer
 
+A React/MUI component to visualize and explore RDF entities.
+
+## Getting started
+
+1) Make sure you have the peer dependencies installed, see `package.json`. Basically you have to install:
+    - React
+    - Material UI (with icons)
+2) Install the library using `npm i rdf-entity-viewer`
+3) Import the stylesheet (preferably in the file that is your app entry point, e.g `main.tsx`, `App.js`, etc.) like that:
+
+```js
+// In the file that is the entry point (main or App for instance)
+
+import 'rdf-entity-viewer/dist/style.css'
+
+// ...
+```
+
+4) You can now use the component like this: 🎉
+
+```tsx
+// file: MyAwesomeComponent.tsx
+
+import RdfEntityViewer from 'rdf-entity-viewer'
+import { Box } from '@mui/material'
+
+function MyAwesomeComponent (): JSX.Element {
+    return (
+        <Box>
+            <RdfEntityViewer
+                iri='http://the-qa-company.com/plant2'
+                label='Plant 2'
+            />
+        </Box>
+    )
+}
+
+export default MyAwesomeComponent
+
+```
+
+
 ## Contributing
 
 Branch | Description
