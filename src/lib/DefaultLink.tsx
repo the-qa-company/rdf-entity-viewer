@@ -7,7 +7,7 @@ interface Props {
 
 const DefaultLink = (props: Props): JSX.Element => {
   const { href, children } = props
-  return <Link href={href}>{children}</Link>
+  return <Link href={href} target='_blank' rel='noreferrer'>{children}</Link>
 }
 
 export default DefaultLink
