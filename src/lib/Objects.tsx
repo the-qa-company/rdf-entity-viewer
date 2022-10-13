@@ -4,6 +4,8 @@ import { stringToHashNumber } from './hash'
 import { useViewerContext } from './viewer-context'
 import Qualifiers from './Qualifiers'
 import SimpleObject from './SimpleObject'
+import { usePredicateContext } from './predicate-context'
+import SeeMoreButton from './SeeMoreButton'
 
 interface Props {
   objects: ObjectsI
@@ -13,6 +15,7 @@ function Objects (props: Props): JSX.Element {
   const { objects } = props
 
   const { data } = useViewerContext()
+  const { howManyVisibleObjects, setHowManyVisibleObjects } = usePredicateContext()
 
   // Values sorted by type
   const sortedObjects = useMemo(() => objects.sort((a, b) => (
@@ -51,20 +54,23 @@ function Objects (props: Props): JSX.Element {
     }).filter((group) => group.length > 0)
   }, [groups, data])
 
+  const showSeeMore = useMemo(() => filteredGroups.flat().length > howManyVisibleObjects, [filteredGroups, howManyVisibleObjects])
+
+  const visibleObjects = useMemo(() => {
+    return filteredGroups.flat().slice(0, howManyVisibleObjects)
+  }, [filteredGroups, howManyVisibleObjects])
+
   return (
     <>
-      {filteredGroups.map((group, groupIndex): JSX.Element => {
-        const groupType = group[0].type
-        return (
-          <React.Fragment key={groupIndex}>
-            {group.map((object, objectIndex): JSX.Element => (
-              groupType === 'bnode'
-                ? <Qualifiers key={objectIndex} />
-                : <SimpleObject key={objectIndex} object={object} />
-            ))}
-          </React.Fragment>
-        )
-      })}
+      {visibleObjects.map((object, objectIndex): JSX.Element => (
+        object.type === 'bnode'
+          ? <Qualifiers key={objectIndex} />
+          : <SimpleObject key={objectIndex} object={object} />
+      ))}
+
+      {showSeeMore && (
+        <SeeMoreButton onClick={() => setHowManyVisibleObjects(filteredGroups.flat().length)} />
+      )}
     </>
   )
 }

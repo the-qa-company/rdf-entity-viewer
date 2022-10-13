@@ -5,11 +5,19 @@
   gap: 10px;
 
   .predicate {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    padding-right: 10px;
+    & > * {
+      min-width: 0;
+      min-height: 0;
+    }
     .content {
       padding-top: 10px;
       white-space: nowrap;
       text-overflow: ellipsis;
       overflow: hidden;
+      position: relative;
       // Default style for the Link component:
       & > *:nth-child(2) {
         white-space: initial;
