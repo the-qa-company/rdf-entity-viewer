@@ -1,15 +1,25 @@
-import { Divider } from '@mui/material'
+import { Alert, Box, Divider } from '@mui/material'
 import React, { useMemo } from 'react'
 import { useViewerContext } from './viewer-context'
 import Predicate from './Predicate'
 
 function Body (): JSX.Element {
   const { data, iri } = useViewerContext()
-  if (iri === undefined || data === undefined) throw new Error('Body: context is missing information')
+  if (iri === undefined) throw new Error('Body: context is missing information')
 
-  const predicates = useMemo(() => data[iri], [])
-  if (predicates === undefined) throw new Error('Body: The given IRI is not in the data')
-  const entries = useMemo(() => Object.entries(predicates), [predicates])
+  const predicates = useMemo(() => data?.[iri], [data])
+  const entries = useMemo(() => {
+    if (predicates === undefined) return undefined
+    return Object.entries(predicates)
+  }, [predicates])
+
+  if (entries === undefined) {
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+        <Alert severity='error'>No data</Alert>
+      </Box>
+    )
+  }
 
   return (
     <>

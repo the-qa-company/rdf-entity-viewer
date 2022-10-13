@@ -1,7 +1,12 @@
 import { createContext, useContext } from 'react'
-import { Props as RdfEntityViewerProps } from './RdfEntityViewer'
+import DefaultLink from './DefaultLink'
+import { RdfJson } from './rdf-json'
 
-export type ViewerContextI = Pick<RdfEntityViewerProps, 'data' | 'iri'>
+export interface ViewerContextI {
+  data?: RdfJson
+  iri?: string
+  LinkComponent: typeof DefaultLink
+}
 
 export const ViewerContext = createContext<ViewerContextI | undefined>(undefined)
 

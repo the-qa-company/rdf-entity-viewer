@@ -1,4 +1,3 @@
-import React from 'react'
 import { IconButton, Tooltip } from '@mui/material'
 import { ContentCopy as ContentCopyIcon } from '@mui/icons-material'
 
@@ -31,4 +30,9 @@ function CopyButton (props: Props): JSX.Element {
   )
 }
 
+export { CopyButton }
 export default CopyButton
+
+export function CopyIRIButton (props: Omit<Props, 'title'>): JSX.Element {
+  return <CopyButton {...props} title='Copy IRI' />
+}

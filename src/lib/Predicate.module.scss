@@ -1,0 +1,26 @@
+.container {
+  display: grid;
+  padding: 12px 20px;
+  grid-template-columns: 50% 50%;
+  gap: 10px;
+
+  .predicate {
+    .content {
+      padding-top: 10px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      // Default style for the Link component:
+      & > *:nth-child(2) {
+        white-space: initial;
+        word-break: break-all;
+      }
+    }
+  }
+  
+  .objects {
+    & > *:not(:last-child) {
+      margin-bottom: 14px;
+    }
+  }
+}

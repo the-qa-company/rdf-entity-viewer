@@ -2,7 +2,7 @@ import RdfEntityViewer, { RdfJson } from '@/lib/RdfEntityViewer'
 import { Box, TextField } from '@mui/material'
 import { useCallback, useEffect, useState } from 'react'
 
-import s from './App.module.css'
+import s from './App.module.scss'
 
 const wikidataEntityRegex = /\/?(Q[1-9][0-9]*)/
 
@@ -67,9 +67,10 @@ function App (): JSX.Element {
         value={userInput}
         onChange={e => setUserInput(e.target.value)}
         onKeyDown={e => e.key === 'Enter' && makeRequest()}
-        fullWidth
         error={userInputBadFormat}
         helperText={userInputBadFormat ? 'Invalid format' : undefined}
+        className={s.textfield}
+        sx={t => ({ bgcolor: t.palette.background.paper })}
       />
       <RdfEntityViewer
         iri={entity === undefined ? undefined : `http://www.wikidata.org/entity/${entity}`}

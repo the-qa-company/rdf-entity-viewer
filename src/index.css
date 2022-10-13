@@ -1,5 +1,9 @@
+html, body {
+  background-color: #f5f5f5 !important;
+}
+
 #root {
-  max-width: 700px;
+  max-width: 1600px;
   margin: 0 auto;
   padding: 2rem;
 }

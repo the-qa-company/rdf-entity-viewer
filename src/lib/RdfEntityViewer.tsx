@@ -4,10 +4,12 @@ import {
 } from '@mui/material'
 import { RdfJson } from './rdf-json'
 import { mergeClasses } from './common-hooks'
-import CopyButton from './CopyButton'
+import { CopyIRIButton } from './CopyButton'
 import DefaultLink from './DefaultLink'
 import Body from './Body'
 import { ViewerContext, ViewerContextI } from './viewer-context'
+
+import './global.scss'
 
 import s from './RdfEntityViewer.module.scss'
 
@@ -73,7 +75,7 @@ function RdfEntityViewer (props: Props): JSX.Element {
   }, [forceExpanded, loading, aDialogIsShown])
 
   const showHeaderTitle = useMemo(() => iri !== undefined && !aDialogIsShown && !loading, [iri, aDialogIsShown, loading])
-  const mountBody = useMemo(() => !bodyLoading && iri !== undefined && data !== undefined, [bodyLoading, iri, data])
+  const mountBody = useMemo(() => !bodyLoading && iri !== undefined, [bodyLoading, iri])
 
   // Call onExpand when the component is expanded
   useEffect(() => {
@@ -82,15 +84,17 @@ function RdfEntityViewer (props: Props): JSX.Element {
 
   const label = useMemo(() => {
     if (labelProp !== undefined) return labelProp
+    if (data === undefined || iri === undefined) return undefined
     // TODO: use the label from the data
     return iri
-  }, [labelProp, iri])
+  }, [labelProp, iri, data])
 
   const skeletonWidth = useMemo(() => Math.round(Math.random() * 200) + 240, [])
 
   const contextValue: ViewerContextI = {
     data,
-    iri
+    iri,
+    LinkComponent
   }
 
   return (
@@ -106,7 +110,7 @@ function RdfEntityViewer (props: Props): JSX.Element {
             <Typography variant='h4' className={s.title}>
               {showHeaderTitle && (
                 <>
-                  <CopyButton bigger value={iri!} title='Copy IRI' />
+                  <CopyIRIButton bigger value={iri!} />
                   <LinkComponent href={iri!}>{label ?? iri!}</LinkComponent>
                 </>
               )}
