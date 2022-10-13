@@ -8,20 +8,25 @@
     display: grid;
     grid-template-columns: 1fr auto;
     padding-right: 10px;
+    position: relative;
     & > * {
       min-width: 0;
       min-height: 0;
     }
     .content {
       padding-top: 10px;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      overflow: hidden;
-      position: relative;
-      // Default style for the Link component:
-      & > *:nth-child(2) {
-        white-space: initial;
-        word-break: break-all;
+      padding-bottom: 20px;
+      .sticky {        
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        position: sticky;
+        top: 10px;
+        // Default style for the Link component:
+        & > *:nth-child(2) {
+          white-space: initial;
+          word-break: break-all;
+        }
       }
     }
   }

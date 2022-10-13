@@ -38,10 +38,12 @@ function Predicate (props: Props): JSX.Element {
 
         <Box className={s.predicate}>
           <Box className={s.content}>
-            <CopyIRIButton value={predicate} />
-            <LinkComponent href={predicate}>
-              {predicate}
-            </LinkComponent>
+            <Box className={s.sticky}>
+              <CopyIRIButton value={predicate} />
+              <LinkComponent href={predicate}>
+                {predicate}
+              </LinkComponent>
+            </Box>
           </Box>
           <RetractButton
             visible={objectsCanBeRetracted}
