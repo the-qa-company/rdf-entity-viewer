@@ -6,6 +6,7 @@ import Objects from './Objects'
 import RetractButton from './RetractButton'
 import { useMemo, useState } from 'react'
 import { PredicateContext, PredicateContextI } from './predicate-context'
+import { formatIRI } from './format'
 
 import s from './Predicate.module.scss'
 
@@ -18,7 +19,7 @@ interface Props {
 
 function Predicate (props: Props): JSX.Element {
   const { predicate, objects } = props
-  const { LinkComponent } = useViewerContext()
+  const { LinkComponent, prefixes } = useViewerContext()
 
   const [howManyVisibleObjects, setHowManyVisibleObjects] = useState(defaultHowManyVisibleObjects)
   const objectsCanBeRetracted = useMemo(() => howManyVisibleObjects > defaultHowManyVisibleObjects, [howManyVisibleObjects])
@@ -41,7 +42,7 @@ function Predicate (props: Props): JSX.Element {
             <Box className={s.sticky}>
               <CopyIRIButton value={predicate} />
               <LinkComponent href={predicate}>
-                {predicate}
+                {formatIRI(prefixes, predicate)}
               </LinkComponent>
             </Box>
           </Box>

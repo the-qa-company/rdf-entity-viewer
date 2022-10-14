@@ -78,6 +78,15 @@ function App (): JSX.Element {
         loading={loading}
         error={error}
         forceExpanded
+        prefixes={{
+          wd: 'http://www.wikidata.org/entity/',
+          wdt: 'http://www.wikidata.org/prop/direct/',
+          wikibase: 'http://wikiba.se/ontology#',
+          p: 'http://www.wikidata.org/prop/',
+          rdf: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
+          rdfs: 'http://www.w3.org/2000/01/rdf-schema#',
+          xsd: 'http://www.w3.org/2001/XMLSchema#'
+        }}
       />
     </Box>
   )

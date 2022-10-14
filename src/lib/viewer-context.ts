@@ -6,6 +6,7 @@ export interface ViewerContextI {
   data?: RdfJson
   iri?: string
   LinkComponent: typeof DefaultLink
+  prefixes: Record<string, string>
 }
 
 export const ViewerContext = createContext<ViewerContextI | undefined>(undefined)

@@ -8,6 +8,7 @@ import { CopyIRIButton } from './CopyButton'
 import DefaultLink from './DefaultLink'
 import Body from './Body'
 import { ViewerContext, ViewerContextI } from './viewer-context'
+import { formatIRI } from './format'
 
 import './global.scss'
 
@@ -32,6 +33,11 @@ export interface Props extends React.ComponentProps<typeof Paper> {
   LinkComponent?: typeof DefaultLink
   /** Define an error to be printed */
   error?: string
+  /** Define the prefixes that should be used to render IRIs.
+   * The keys are the prefixes, do not include the colon.
+   * The values are the IRI of the prefix.
+  */
+  prefixes?: Record<string, string>
 }
 
 /**
@@ -48,6 +54,7 @@ function RdfEntityViewer (props: Props): JSX.Element {
     onExpand,
     LinkComponent = DefaultLink,
     error: errorProp,
+    prefixes = {},
     ...otherProps
   } = props
 
@@ -94,7 +101,8 @@ function RdfEntityViewer (props: Props): JSX.Element {
   const contextValue: ViewerContextI = {
     data,
     iri,
-    LinkComponent
+    LinkComponent,
+    prefixes
   }
 
   return (
@@ -111,7 +119,7 @@ function RdfEntityViewer (props: Props): JSX.Element {
               {showHeaderTitle && (
                 <>
                   <CopyIRIButton bigger value={iri!} />
-                  <LinkComponent href={iri!}>{label ?? iri!}</LinkComponent>
+                  <LinkComponent href={iri!}>{formatIRI(prefixes, label ?? iri!)}</LinkComponent>
                 </>
               )}
               {loading && (

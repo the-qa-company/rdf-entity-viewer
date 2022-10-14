@@ -1,4 +1,5 @@
 import { CopyIRIButton } from './CopyButton'
+import { formatIRI } from './format'
 import LiteralObject from './LiteralObject'
 import ObjectContainer from './ObjectContainer'
 import { Object } from './rdf-json'
@@ -10,7 +11,7 @@ interface Props {
 
 function SimpleObject (props: Props): JSX.Element {
   const { object } = props
-  const { LinkComponent } = useViewerContext()
+  const { LinkComponent, prefixes } = useViewerContext()
   if (object.type === 'bnode') throw new Error('SimpleObject does not support bnodes')
   return (
     <ObjectContainer>
@@ -18,7 +19,7 @@ function SimpleObject (props: Props): JSX.Element {
         <>
           <CopyIRIButton value={object.value} />
           <LinkComponent href={object.value}>
-            {object.value}
+            {formatIRI(prefixes, object.value)}
           </LinkComponent>
         </>
       )}
