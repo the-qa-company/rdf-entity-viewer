@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from 'react'
 
 import s from './App.module.scss'
 
-const wikidataEntityRegex = /\/?(Q[1-9][0-9]*)/
+const wikidataEntityRegex = /\/?([Q|P][1-9][0-9]*)/
 
 function App (): JSX.Element {
   const [userInput, setUserInput] = useState('')

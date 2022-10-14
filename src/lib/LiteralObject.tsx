@@ -15,10 +15,10 @@ function LiteralObject (props: Props): JSX.Element {
   const { prefixes } = useViewerContext()
 
   if (typeof object.lang === 'string') {
-    return <Box display='flex'>{object.value}<Box color={grey}>@{object.lang}</Box></Box>
+    return <span>{object.value}<span style={{ color: grey }}>@{object.lang}</span></span>
   }
   if (typeof object.datatype === 'string') {
-    return <Box display='flex'>{object.value}<Box color={grey}>^^{formatIRI(prefixes, object.datatype)}</Box></Box>
+    return <span>{object.value}<span style={{ color: grey }}>^^{formatIRI(prefixes, object.datatype)}</span></span>
   }
   return <>{object.value}</>
 }
