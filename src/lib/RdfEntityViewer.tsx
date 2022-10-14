@@ -54,7 +54,7 @@ function RdfEntityViewer (props: Props): JSX.Element {
     forceExpanded = false,
     label: labelProp,
     loading: loadingProp = false,
-    bodyLoading = false,
+    bodyLoading: bodyLoadingProp = false,
     onExpand,
     LinkComponent = DefaultLink,
     error: errorProp,
@@ -74,6 +74,7 @@ function RdfEntityViewer (props: Props): JSX.Element {
 
   const error = useMemo(() => errorProp !== undefined, [errorProp])
   const loading = useMemo(() => loadingProp && !error, [loadingProp, error])
+  const bodyLoading = useMemo(() => loading || bodyLoadingProp, [loading, bodyLoadingProp])
 
   const aDialogIsShown = useMemo(() => {
     const noData = (!loading && iri === undefined)
