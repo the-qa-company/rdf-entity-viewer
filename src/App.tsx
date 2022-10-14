@@ -70,7 +70,7 @@ function App (): JSX.Element {
         error={userInputBadFormat}
         helperText={userInputBadFormat ? 'Invalid format' : undefined}
         className={s.textfield}
-        sx={t => ({ bgcolor: t.palette.background.paper })}
+        sx={t => ({ '.MuiInputBase-input': { bgcolor: t.palette.background.paper } })}
       />
       <RdfEntityViewer
         iri={entity === undefined ? undefined : `http://www.wikidata.org/entity/${entity}`}

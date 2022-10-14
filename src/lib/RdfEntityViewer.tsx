@@ -8,7 +8,7 @@ import { CopyIRIButton } from './CopyButton'
 import DefaultLink from './DefaultLink'
 import Body from './Body'
 import { ViewerContext, ViewerContextI } from './viewer-context'
-import { formatIRI } from './format'
+import { formatIRI, getLabel } from './format'
 
 import './global.scss'
 
@@ -38,6 +38,10 @@ export interface Props extends React.ComponentProps<typeof Paper> {
    * The values are the IRI of the prefix.
   */
   prefixes?: Record<string, string>
+  /** IRIs used to show labels */
+  labelIRIs?: string[]
+  /** Overwrite the default locale */
+  locale?: Intl.Locale | string
 }
 
 /**
@@ -54,9 +58,17 @@ function RdfEntityViewer (props: Props): JSX.Element {
     onExpand,
     LinkComponent = DefaultLink,
     error: errorProp,
-    prefixes = {},
+    prefixes = { xsd: 'http://www.w3.org/2001/XMLSchema#' },
+    labelIRIs = ['http://www.w3.org/2000/01/rdf-schema#label'],
+    locale: localeProp,
     ...otherProps
   } = props
+
+  const locale = useMemo(() => {
+    if (localeProp === undefined) return new Intl.Locale(navigator.language)
+    if (typeof localeProp === 'string') return new Intl.Locale(localeProp)
+    return localeProp
+  }, [localeProp])
 
   const [userExpanded, setUserExpanded] = useState(false)
 
@@ -92,8 +104,7 @@ function RdfEntityViewer (props: Props): JSX.Element {
   const label = useMemo(() => {
     if (labelProp !== undefined) return labelProp
     if (data === undefined || iri === undefined) return undefined
-    // TODO: use the label from the data
-    return iri
+    return getLabel(data, labelIRIs, locale, iri)
   }, [labelProp, iri, data])
 
   const skeletonWidth = useMemo(() => Math.round(Math.random() * 200) + 240, [])
@@ -119,7 +130,9 @@ function RdfEntityViewer (props: Props): JSX.Element {
               {showHeaderTitle && (
                 <>
                   <CopyIRIButton bigger value={iri!} />
-                  <LinkComponent href={iri!}>{formatIRI(prefixes, label ?? iri!)}</LinkComponent>
+                  <LinkComponent href={iri!}>
+                    {label !== undefined ? label : formatIRI(prefixes, iri!)}
+                  </LinkComponent>
                 </>
               )}
               {loading && (
