@@ -14,7 +14,16 @@ function SimpleObject (props: Props): JSX.Element {
   const { LinkComponent, prefixes } = useViewerContext()
   if (object.type === 'bnode') throw new Error('SimpleObject does not support bnodes')
   return (
-    <ObjectContainer>
+    <ObjectContainer
+      tableCellProps={{
+        sx: {
+          '& > *:nth-child(2)': {
+            whiteSpace: 'initial',
+            wordBreak: 'break-all'
+          }
+        }
+      }}
+    >
       {object.type === 'uri' && (
         <>
           <CopyIRIButton value={object.value} />
