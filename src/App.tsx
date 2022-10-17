@@ -4,26 +4,16 @@ import { useCallback, useEffect, useState } from 'react'
 
 import s from './App.module.scss'
 
-const wikidataEntityRegex = /\/?([Q|P][1-9][0-9]*)/
-
 function App (): JSX.Element {
   const [userInput, setUserInput] = useState('')
-  const [entity, setEntity] = useState<string>()
-  const [userInputBadFormat, setUserInputBadFormat] = useState(false)
+  const [iri, setIri] = useState<string>()
   const [error, setError] = useState<string>()
   const [loading, setLoading] = useState(false)
   const [data, setData] = useState<RdfJson>()
 
-  // Set entity and detect bad format
+  // Set IRI from user input
   const handleUserInput = useCallback(() => {
-    const match = userInput.match(wikidataEntityRegex)
-    if (match === null) {
-      setUserInputBadFormat(true)
-      setEntity(undefined)
-      return
-    }
-    setUserInputBadFormat(false)
-    setEntity(match[1])
+    setIri(userInput)
   }, [userInput])
 
   // Debounce user input and call handleUserInput
@@ -35,9 +25,25 @@ function App (): JSX.Element {
 
   // Make a request to the Wikidata API to get the data
   const makeRequest = useCallback(() => {
-    if (entity === undefined) return
+    if (iri === undefined) return
     const params = new URLSearchParams()
-    params.set('query', `CONSTRUCT { wd:${entity} ?p ?o } WHERE { wd:${entity} ?p ?o }`)
+    // params.set('query', `CONSTRUCT { <${iri}> ?p ?o } WHERE { <${iri}> ?p ?o }`)
+    params.set('query', `
+      CONSTRUCT {
+        ?sub ?pred ?obj.
+        ?obj ?pred2 ?obj2.
+        ?sub ?p ?o.
+      }
+      WHERE {
+        VALUES ?sub { <${iri}> }
+        ?sub ?p ?o.
+        FILTER((!(STRSTARTS(STR(?p), "http://www.wikidata.org/prop/direct/"))) && (!(STRSTARTS(STR(?o), "http://www.wikidata.org/entity/statement/"))))
+        ?sub ?pred ?stmt.
+        ?stmt ?pred2 ?obj2.
+        FILTER(STRSTARTS(STR(?pred), "http://www.wikidata.org/prop/P"))
+        BIND(BNODE(STR(?stmt)) AS ?obj)
+      }
+    `)
     setError(undefined)
     setLoading(true)
     fetch(`https://query.wikidata.org/sparql?${params.toString()}`, {
@@ -53,12 +59,12 @@ function App (): JSX.Element {
         console.error(err)
       })
       .finally(() => setLoading(false))
-  }, [entity])
+  }, [iri])
 
   // Make a request every time the entity changes
   useEffect(() => {
     makeRequest()
-  }, [entity, makeRequest])
+  }, [iri, makeRequest])
 
   return (
     <Box className={s.container}>
@@ -67,13 +73,11 @@ function App (): JSX.Element {
         value={userInput}
         onChange={e => setUserInput(e.target.value)}
         onKeyDown={e => e.key === 'Enter' && makeRequest()}
-        error={userInputBadFormat}
-        helperText={userInputBadFormat ? 'Invalid format' : undefined}
         className={s.textfield}
         sx={t => ({ '.MuiInputBase-input': { bgcolor: t.palette.background.paper } })}
       />
       <RdfEntityViewer
-        iri={entity === undefined ? undefined : `http://www.wikidata.org/entity/${entity}`}
+        iri={iri}
         data={data}
         loading={loading}
         error={error}

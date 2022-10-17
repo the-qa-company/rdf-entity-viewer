@@ -1,4 +1,4 @@
-import { Box, useTheme } from '@mui/material'
+import { useTheme } from '@mui/material'
 import { formatIRI } from './format'
 import { Object } from './rdf-json'
 import { useViewerContext } from './viewer-context'

@@ -22,11 +22,6 @@
         white-space: nowrap;
         position: sticky;
         top: 10px;
-        // Default style for the Link component:
-        & > *:nth-child(2) {
-          white-space: initial;
-          word-break: break-all;
-        }
       }
     }
   }

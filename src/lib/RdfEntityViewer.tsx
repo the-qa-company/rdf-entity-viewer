@@ -56,7 +56,7 @@ function RdfEntityViewer (props: Props): JSX.Element {
     loading: loadingProp = false,
     bodyLoading: bodyLoadingProp = false,
     onExpand,
-    LinkComponent = DefaultLink,
+    LinkComponent: LinkComponentProp = DefaultLink,
     error: errorProp,
     prefixes = { xsd: 'http://www.w3.org/2001/XMLSchema#' },
     labelIRIs = ['http://www.w3.org/2000/01/rdf-schema#label'],
@@ -109,6 +109,15 @@ function RdfEntityViewer (props: Props): JSX.Element {
   }, [labelProp, iri, data])
 
   const skeletonWidth = useMemo(() => Math.round(Math.random() * 200) + 240, [])
+
+  // eslint-disable-next-line react/display-name, react/prop-types
+  const LinkComponent = useMemo((): typeof DefaultLink => ({ children, ...otherProps }) => (
+    <span className={s.linkComponentContainer}>
+      <LinkComponentProp {...otherProps}>
+        {children}
+      </LinkComponentProp>
+    </span>
+  ), [])
 
   const contextValue: ViewerContextI = {
     data,

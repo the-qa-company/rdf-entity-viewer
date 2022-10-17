@@ -13,6 +13,12 @@ $height: 100px;
   align-items: center;
 }
 
+// Default style for LinkComponent
+.linkComponentContainer > *:first-child {
+  white-space: initial;
+  word-break: break-all;
+}
+
 .container {
   min-height: $height;
   justify-content: center;

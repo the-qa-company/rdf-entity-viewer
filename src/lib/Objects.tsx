@@ -64,7 +64,7 @@ function Objects (props: Props): JSX.Element {
     <>
       {visibleObjects.map((object, objectIndex): JSX.Element => (
         object.type === 'bnode'
-          ? <Qualifiers key={objectIndex} />
+          ? <Qualifiers key={objectIndex} bnode={object} />
           : <SimpleObject key={objectIndex} object={object} />
       ))}
 

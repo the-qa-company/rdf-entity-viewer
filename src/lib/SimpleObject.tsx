@@ -1,42 +1,30 @@
-import { CopyIRIButton } from './CopyButton'
-import { formatIRI } from './format'
+import React, { useMemo } from 'react'
+import IRIObject from './IRIObject'
 import LiteralObject from './LiteralObject'
 import ObjectContainer from './ObjectContainer'
 import { Object } from './rdf-json'
-import { useViewerContext } from './viewer-context'
 
 interface Props {
   object: Object
+  noContainer?: boolean
 }
 
 function SimpleObject (props: Props): JSX.Element {
-  const { object } = props
-  const { LinkComponent, prefixes } = useViewerContext()
+  const { object, noContainer = false } = props
   if (object.type === 'bnode') throw new Error('SimpleObject does not support bnodes')
+
+  const Enveloppe = useMemo(() => noContainer ? React.Fragment : ObjectContainer, [noContainer])
+
   return (
-    <ObjectContainer
-      tableCellProps={{
-        sx: {
-          '& > *:nth-child(2)': {
-            whiteSpace: 'initial',
-            wordBreak: 'break-all'
-          }
-        }
-      }}
-    >
+    <Enveloppe>
       {object.type === 'uri' && (
-        <>
-          <CopyIRIButton value={object.value} />
-          <LinkComponent href={object.value}>
-            {formatIRI(prefixes, object.value)}
-          </LinkComponent>
-        </>
+        <IRIObject object={object} />
       )}
 
       {object.type === 'literal' && (
         <LiteralObject object={object} />
       )}
-    </ObjectContainer>
+    </Enveloppe>
   )
 }
 
