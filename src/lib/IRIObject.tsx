@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { CopyIRIButton } from './CopyButton'
 import { formatIRI } from './format'
 import { Object } from './rdf-json'
@@ -13,12 +14,30 @@ function IRIObject (props: Props): JSX.Element {
 
   const { prefixes, LinkComponent } = useViewerContext()
 
+  const [isImg, setIsImg] = useState(false)
+  useEffect(() => {
+    const img = new Image()
+    img.onload = () => setIsImg(true)
+    img.onerror = () => setIsImg(false)
+    img.src = object.value
+  }, [])
+
   return (
     <span style={{ whiteSpace: 'nowrap' }}>
-      <CopyIRIButton value={object.value} />
-      <LinkComponent href={object.value}>
-        {formatIRI(prefixes, object.value)}
-      </LinkComponent>
+      {isImg
+        ? (
+          <LinkComponent href={object.value}>
+            <img src={object.value} alt={object.value} style={{ maxWidth: '200px', maxHeight: '200px' }} />
+          </LinkComponent>
+          )
+        : (
+          <>
+            <CopyIRIButton value={object.value} />
+            <LinkComponent href={object.value}>
+              {formatIRI(prefixes, object.value)}
+            </LinkComponent>
+          </>
+          )}
     </span>
   )
 }

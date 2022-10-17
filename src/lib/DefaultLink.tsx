@@ -1,8 +1,8 @@
 import { Link } from '@mui/material'
+import { PropsWithChildren } from 'react'
 
-interface Props {
+interface Props extends PropsWithChildren {
   href: string
-  children: string
 }
 
 const DefaultLink = (props: Props): JSX.Element => {
