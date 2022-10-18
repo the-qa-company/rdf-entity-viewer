@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="1000mm"
+   height="1000mm"
+   viewBox="0 0 1000 1000"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1.2 (b8e25be8, 2022-02-05)"
+   sodipodi:docname="logo-white-bg.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="true"
+     inkscape:document-units="mm"
+     showgrid="false"
+     width="500mm"
+     inkscape:zoom="0.13338729"
+     inkscape:cx="2320.311"
+     inkscape:cy="2402.7776"
+     inkscape:window-width="1858"
+     inkscape:window-height="1027"
+     inkscape:window-x="62"
+     inkscape:window-y="25"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer2" />
+  <defs
+     id="defs2">
+    <inkscape:path-effect
+       effect="fillet_chamfer"
+       id="path-effect1938"
+       is_visible="true"
+       lpeversion="1"
+       satellites_param="F,0,0,1,0,13.229167,0,1 @ F,0,0,1,0,13.229167,0,1 @ F,0,0,1,0,13.229167,0,1"
+       unit="px"
+       method="auto"
+       mode="F"
+       radius="50"
+       chamfer_steps="1"
+       flexible="false"
+       use_knot_distance="true"
+       apply_no_radius="true"
+       apply_with_radius="true"
+       only_selected="false"
+       hide_knots="false" />
+  </defs>
+  <g
+     inkscape:label="blue circle"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <circle
+       style="fill:#0f7aaf;fill-rule:evenodd;stroke-width:0.361375;fill-opacity:1"
+       id="path31"
+       cx="500"
+       cy="500"
+       r="500" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="white chat bubble">
+    <circle
+       style="fill:#ffffff;fill-opacity:1;stroke-width:0.512628"
+       id="path1093"
+       cx="500"
+       cy="500"
+       r="330" />
+    <path
+       style="fill:#ffffff;stroke:none;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 578.07003,818.78061 159.49628,93.24397 a 7.4798455,7.4798455 149.79527 0 0 11.25431,-6.55141 l -2.47243,-196.55676 a 7.2968346,7.2968346 28.15922 0 0 -11.26622,-6.03057 L 577.74916,804.90635 a 8.1501165,8.1501165 88.675157 0 0 0.32087,13.87426 z"
+       id="path1571"
+       inkscape:path-effect="#path-effect1938"
+       inkscape:original-d="m 566.64933,812.1039 182.33768,106.59739 -2.80521,-223.013 z" />
+  </g>
+</svg>
