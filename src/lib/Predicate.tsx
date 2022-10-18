@@ -1,4 +1,4 @@
-import { Box } from '@mui/material' 
+import { Box } from '@mui/material'
 import { Objects as ObjectsI } from './rdf-json'
 import { CopyIRIButton } from './CopyButton'
 import { useViewerContext } from './viewer-context'
