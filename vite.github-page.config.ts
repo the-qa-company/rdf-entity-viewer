@@ -23,6 +23,7 @@ const noJekyll = (): PluginOption => {
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: '/rdf-entity-viewer/',
   plugins: [
     react(),
     tsconfigPaths(),
