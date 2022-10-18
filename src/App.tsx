@@ -1,5 +1,5 @@
 import RdfEntityViewer, { RdfJson } from '@/lib/RdfEntityViewer'
-import { Box, TextField, Typography } from '@mui/material'
+import { Box, Button, TextField, Typography } from '@mui/material'
 import { useCallback, useEffect, useState } from 'react'
 
 import logoTheQACompany from './res/logo-bgwhite.svg'
@@ -186,15 +186,35 @@ function App (): JSX.Element {
       <Typography variant='h1' textAlign='center' fontSize='52px'>
         RDF Entity Explorer
       </Typography>
-      <TextField
-        label='Wikidata IRI (with or without prefix)'
-        value={userInput}
-        onChange={e => setUserInput(e.target.value)}
-        onKeyDown={e => e.key === 'Enter' && handleUserInput()}
-        placeholder='wd:Q19399674'
-        className={s.textfield}
-        sx={t => ({ '.MuiInputBase-input': { bgcolor: t.palette.background.paper } })}
-      />
+      <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+        <TextField
+          label='Wikidata IRI (you can also use prefixes)'
+          value={userInput}
+          onChange={e => setUserInput(e.target.value)}
+          onKeyDown={e => e.key === 'Enter' && handleUserInput()}
+          placeholder='wd:Q19399674'
+          className={s.textfield}
+          sx={t => ({
+            '.MuiInputBase-root': {
+              borderTopRightRadius: 0,
+              borderBottomRightRadius: 0
+            },
+            '.MuiInputBase-input': {
+              bgcolor: t.palette.background.paper
+            }
+          })}
+        />
+        <Button
+          variant='contained'
+          sx={{
+            borderTopLeftRadius: 0,
+            borderBottomLeftRadius: 0
+          }}
+          onClick={handleUserInput}
+        >
+          Query
+        </Button>
+      </Box>
       <RdfEntityViewer
         iri={iri}
         data={data}
