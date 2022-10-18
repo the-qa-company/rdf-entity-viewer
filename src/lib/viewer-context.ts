@@ -7,6 +7,8 @@ export interface ViewerContextI {
   iri?: string
   LinkComponent: typeof DefaultLink
   prefixes: Record<string, string>
+  labelIRIs: string[]
+  locale: Intl.Locale
 }
 
 export const ViewerContext = createContext<ViewerContextI | undefined>(undefined)

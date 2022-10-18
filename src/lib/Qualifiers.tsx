@@ -14,7 +14,8 @@ function Qualifiers (props: Props): JSX.Element | null {
   const { bnode } = props
   if (bnode.type !== 'bnode') throw new Error('Qualifiers only supports bnodes')
 
-  const { data, LinkComponent, prefixes } = useViewerContext()
+  const viewerCtx = useViewerContext()
+  const { data, LinkComponent } = viewerCtx
   if (data === undefined) throw new Error('Qualifiers requires data')
 
   const bnodeData: Predicates | undefined = data[bnode.value]
@@ -29,7 +30,7 @@ function Qualifiers (props: Props): JSX.Element | null {
           <TableCell sx={{ whiteSpace: 'nowrap', maxWidth: '500px', minWidth: '200px' }}>
             <CopyIRIButton value={predicate} />
             <LinkComponent href={predicate}>
-              {formatIRI(prefixes, predicate)}
+              {formatIRI(viewerCtx, predicate)}
             </LinkComponent>
           </TableCell>
           <TableCell>

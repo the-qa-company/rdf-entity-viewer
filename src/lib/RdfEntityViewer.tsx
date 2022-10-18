@@ -102,12 +102,6 @@ function RdfEntityViewer (props: Props): JSX.Element {
     if (expanded) onExpand?.()
   }, [expanded])
 
-  const label = useMemo(() => {
-    if (labelProp !== undefined) return labelProp
-    if (data === undefined || iri === undefined) return undefined
-    return getLabel(data, labelIRIs, locale, iri)
-  }, [labelProp, iri, data])
-
   const skeletonWidth = useMemo(() => Math.round(Math.random() * 200) + 240, [])
 
   // eslint-disable-next-line react/display-name, react/prop-types
@@ -119,12 +113,20 @@ function RdfEntityViewer (props: Props): JSX.Element {
     </span>
   ), [])
 
-  const contextValue: ViewerContextI = {
+  const contextValue: ViewerContextI = useMemo(() => ({
     data,
     iri,
     LinkComponent,
-    prefixes
-  }
+    prefixes,
+    labelIRIs,
+    locale
+  }), [data, iri, LinkComponent, prefixes, labelIRIs, locale])
+
+  const label = useMemo(() => {
+    if (labelProp !== undefined) return labelProp
+    if (contextValue.iri === undefined) return undefined
+    return getLabel(contextValue, contextValue.iri)
+  }, [contextValue, labelProp])
 
   return (
     <ViewerContext.Provider value={contextValue}>
@@ -141,7 +143,7 @@ function RdfEntityViewer (props: Props): JSX.Element {
                 <>
                   <CopyIRIButton bigger value={iri!} />
                   <LinkComponent href={iri!}>
-                    {label !== undefined ? label : formatIRI(prefixes, iri!)}
+                    {label !== undefined ? label : formatIRI(contextValue, iri!)}
                   </LinkComponent>
                 </>
               )}

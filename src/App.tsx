@@ -30,18 +30,34 @@ function App (): JSX.Element {
     // params.set('query', `CONSTRUCT { <${iri}> ?p ?o } WHERE { <${iri}> ?p ?o }`)
     params.set('query', `
       CONSTRUCT {
-        ?sub ?pred ?obj.
-        ?obj ?pred2 ?obj2.
-        ?sub ?p ?o.
-      }
-      WHERE {
-        VALUES ?sub { <${iri}> }
-        ?sub ?p ?o.
-        FILTER((!(STRSTARTS(STR(?p), "http://www.wikidata.org/prop/direct/"))) && (!(STRSTARTS(STR(?o), "http://www.wikidata.org/entity/statement/"))))
-        ?sub ?pred ?stmt.
-        ?stmt ?pred2 ?obj2.
-        FILTER(STRSTARTS(STR(?pred), "http://www.wikidata.org/prop/P"))
-        BIND(BNODE(STR(?stmt)) AS ?obj)
+        # "Simple" triples
+        ?sub ?p ?o .
+      
+        # Statements
+        ?sub ?pred ?obj .
+        ?pred rdfs:label ?predLabel .
+        ?obj ?pred2 ?obj2 .
+      } WHERE {
+          # Select the subject
+          BIND(<${iri}> as ?sub)
+        
+          # Find "simple" triples
+          ?sub ?p ?o .
+          FILTER((!(STRSTARTS(STR(?p), "http://www.wikidata.org/prop/direct/"))) && (!(STRSTARTS(STR(?o), "http://www.wikidata.org/entity/statement/"))))
+        
+          # Find triples that have a statement as object
+          ?sub ?pred ?stmt .
+          FILTER(STRSTARTS(STR(?pred), "http://www.wikidata.org/prop/P"))
+          ?stmt ?pred2 ?obj2 .
+          BIND(BNODE(STR(?stmt)) AS ?obj) # Replace the statement IRI with a bnode
+        
+          OPTIONAL {
+            ?predEntity wikibase:claim ?pred .
+            OPTIONAL {
+              ?predEntity rdfs:label ?predLabel .
+              FILTER (LANG(?predLabel) = "en")
+            }
+          }
       }
     `)
     setError(undefined)

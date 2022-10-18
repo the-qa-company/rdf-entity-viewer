@@ -12,7 +12,8 @@ function IRIObject (props: Props): JSX.Element {
   const { object } = props
   if (object.type !== 'uri') throw new Error('IRIObject only supports IRIs')
 
-  const { prefixes, LinkComponent } = useViewerContext()
+  const viewerCtx = useViewerContext()
+  const { LinkComponent } = viewerCtx
 
   const [isImg, setIsImg] = useState(false)
   useEffect(() => {
@@ -34,7 +35,7 @@ function IRIObject (props: Props): JSX.Element {
           <>
             <CopyIRIButton value={object.value} />
             <LinkComponent href={object.value}>
-              {formatIRI(prefixes, object.value)}
+              {formatIRI(viewerCtx, object.value)}
             </LinkComponent>
           </>
           )}

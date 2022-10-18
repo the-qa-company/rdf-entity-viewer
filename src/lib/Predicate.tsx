@@ -1,4 +1,4 @@
-import { Box } from '@mui/material'
+import { Box } from '@mui/material' 
 import { Objects as ObjectsI } from './rdf-json'
 import { CopyIRIButton } from './CopyButton'
 import { useViewerContext } from './viewer-context'
@@ -19,7 +19,8 @@ interface Props {
 
 function Predicate (props: Props): JSX.Element {
   const { predicate, objects } = props
-  const { LinkComponent, prefixes } = useViewerContext()
+  const viewerCtx = useViewerContext()
+  const { LinkComponent } = viewerCtx
 
   const [howManyVisibleObjects, setHowManyVisibleObjects] = useState(defaultHowManyVisibleObjects)
   const objectsCanBeRetracted = useMemo(() => howManyVisibleObjects > defaultHowManyVisibleObjects, [howManyVisibleObjects])
@@ -42,7 +43,7 @@ function Predicate (props: Props): JSX.Element {
             <Box className={s.sticky}>
               <CopyIRIButton value={predicate} />
               <LinkComponent href={predicate}>
-                {formatIRI(prefixes, predicate)}
+                {formatIRI(viewerCtx, predicate)}
               </LinkComponent>
             </Box>
           </Box>

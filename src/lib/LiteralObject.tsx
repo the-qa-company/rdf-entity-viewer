@@ -12,13 +12,13 @@ function LiteralObject (props: Props): JSX.Element {
   if (object.type !== 'literal') throw new Error('LiteralObject only supports literals')
 
   const grey = useTheme().palette.grey[500]
-  const { prefixes } = useViewerContext()
+  const viewerCtx = useViewerContext()
 
   if (typeof object.lang === 'string') {
     return <span>{object.value}<span style={{ color: grey }}>@{object.lang}</span></span>
   }
   if (typeof object.datatype === 'string') {
-    return <span>{object.value}<span style={{ color: grey }}>^^{formatIRI(prefixes, object.datatype)}</span></span>
+    return <span>{object.value}<span style={{ color: grey }}>^^{formatIRI(viewerCtx, object.datatype)}</span></span>
   }
   return <>{object.value}</>
 }
