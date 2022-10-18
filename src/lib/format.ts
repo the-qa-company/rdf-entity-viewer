@@ -8,10 +8,16 @@ export const formatIRI = (viewerCtx: ViewerContextI, iri: string): string => {
   if (label !== undefined) return label
 
   // Check for a prefix
+  let longestPrefix: string | undefined
   for (const [prefix, base] of Object.entries(prefixes)) {
     if (iri.startsWith(base)) {
-      return `${prefix}:${iri.slice(base.length)}`
+      if (longestPrefix === undefined || longestPrefix.length < prefix.length) {
+        longestPrefix = prefix
+      }
     }
+  }
+  if (longestPrefix !== undefined) {
+    return `${longestPrefix}:${iri.slice(prefixes[longestPrefix].length)}`
   }
 
   // Default display

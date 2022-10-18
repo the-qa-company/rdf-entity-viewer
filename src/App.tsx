@@ -4,28 +4,87 @@ import { useCallback, useEffect, useState } from 'react'
 
 import s from './App.module.scss'
 
+const wikidataPrefixes = {
+  bd: 'http://www.bigdata.com/rdf#',
+  cc: 'http://creativecommons.org/ns#',
+  dct: 'http://purl.org/dc/terms/',
+  geo: 'http://www.opengis.net/ont/geosparql#',
+  ontolex: 'http://www.w3.org/ns/lemon/ontolex#',
+  owl: 'http://www.w3.org/2002/07/owl#',
+  p: 'http://www.wikidata.org/prop/',
+  pq: 'http://www.wikidata.org/prop/qualifier/',
+  pqn: 'http://www.wikidata.org/prop/qualifier/value-normalized/',
+  pqv: 'http://www.wikidata.org/prop/qualifier/value/',
+  pr: 'http://www.wikidata.org/prop/reference/',
+  prn: 'http://www.wikidata.org/prop/reference/value-normalized/',
+  prov: 'http://www.w3.org/ns/prov#',
+  prv: 'http://www.wikidata.org/prop/reference/value/',
+  ps: 'http://www.wikidata.org/prop/statement/',
+  psn: 'http://www.wikidata.org/prop/statement/value-normalized/',
+  psv: 'http://www.wikidata.org/prop/statement/value/',
+  rdf: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
+  rdfs: 'http://www.w3.org/2000/01/rdf-schema#',
+  schema: 'http://schema.org/',
+  skos: 'http://www.w3.org/2004/02/skos/core#',
+  wd: 'http://www.wikidata.org/entity/',
+  wdata: 'http://www.wikidata.org/wiki/Special:EntityData/',
+  wdno: 'http://www.wikidata.org/prop/novalue/',
+  wdref: 'http://www.wikidata.org/reference/',
+  wds: 'http://www.wikidata.org/entity/statement/',
+  wdt: 'http://www.wikidata.org/prop/direct/',
+  wdtn: 'http://www.wikidata.org/prop/direct-normalized/',
+  wdv: 'http://www.wikidata.org/value/',
+  wikibase: 'http://wikiba.se/ontology#',
+  xsd: 'http://www.w3.org/2001/XMLSchema#'
+}
+
 function App (): JSX.Element {
   const [userInput, setUserInput] = useState('')
   const [iri, setIri] = useState<string>()
   const [error, setError] = useState<string>()
   const [loading, setLoading] = useState(false)
   const [data, setData] = useState<RdfJson>()
+  const [shouldAutoSend, setShouldAutoSend] = useState(false)
+
+  // Read query from URL params
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const query = params.get('query')
+    if (query !== null) {
+      setShouldAutoSend(true)
+      setUserInput(query)
+    }
+  }, [])
 
   // Set IRI from user input
   const handleUserInput = useCallback(() => {
-    setIri(userInput)
+    if (/^https?:\/\//.test(userInput)) {
+      setIri(userInput)
+    } else {
+      const p = Object.keys(wikidataPrefixes).find(p => userInput.startsWith(`${p}:`))
+      if (p !== undefined) {
+        setIri(userInput.replace(`${p}:`, wikidataPrefixes[p as keyof typeof wikidataPrefixes]))
+      } else {
+        setError('Invalid input')
+      }
+    }
   }, [userInput])
 
-  // Debounce user input and call handleUserInput
+  // Auto send when requested
   useEffect(() => {
-    if (userInput === '') return
-    const t = setTimeout(handleUserInput, 1000)
-    return () => clearTimeout(t)
-  }, [userInput])
+    if (shouldAutoSend) {
+      setShouldAutoSend(false)
+      handleUserInput()
+    }
+  }, [shouldAutoSend, handleUserInput])
 
   // Make a request to the Wikidata API to get the data
   const makeRequest = useCallback(() => {
     if (iri === undefined) return
+    // Store query in URL params
+    const newPageUrl = new URL(window.location as any)
+    newPageUrl.searchParams.set('query', userInput)
+    window.history.pushState({}, '', newPageUrl)
     const params = new URLSearchParams()
     // params.set('query', `CONSTRUCT { <${iri}> ?p ?o } WHERE { <${iri}> ?p ?o }`)
     params.set('query', `
@@ -37,6 +96,8 @@ function App (): JSX.Element {
         ?sub ?pred ?obj .
         ?pred rdfs:label ?predLabel .
         ?obj ?pred2 ?obj2 .
+        ?pred2 rdfs:label ?pred2Label .
+        ?obj2 rdfs:label ?obj2Label .
       } WHERE {
           # Select the subject
           BIND(<${iri}> as ?sub)
@@ -51,12 +112,30 @@ function App (): JSX.Element {
           ?stmt ?pred2 ?obj2 .
           BIND(BNODE(STR(?stmt)) AS ?obj) # Replace the statement IRI with a bnode
         
+          # Find label of predicates p:PXXX
           OPTIONAL {
-            ?predEntity wikibase:claim ?pred .
+            VALUES ?link0 { wikibase:directClaim wikibase:directClaimNormalized wikibase:claim wikibase:statementProperty wikibase:statementValue wikibase:statementValueNormalized wikibase:qualifier wikibase:qualifierValue wikibase:qualifierValueNormalized wikibase:reference wikibase:referenceValue wikibase:referenceValueNormalized }
+            ?predEntity ?link0 ?pred .
             OPTIONAL {
               ?predEntity rdfs:label ?predLabel .
               FILTER (LANG(?predLabel) = "en")
             }
+          }
+        
+          # Find label of statement predicates (predicates inside statements)
+          OPTIONAL {
+            VALUES ?link1 { wikibase:directClaim wikibase:directClaimNormalized wikibase:claim wikibase:statementProperty wikibase:statementValue wikibase:statementValueNormalized wikibase:qualifier wikibase:qualifierValue wikibase:qualifierValueNormalized wikibase:reference wikibase:referenceValue wikibase:referenceValueNormalized }
+            ?pred2Entity ?link1 ?pred2 .
+            OPTIONAL {
+              ?pred2Entity rdfs:label ?pred2Label .
+              FILTER (LANG(?pred2Label) = "en")
+            }
+          }
+
+          # Find label of statement objects (objects inside statements)
+          OPTIONAL {
+            ?obj2 rdfs:label ?obj2Label .
+            FILTER (LANG(?obj2Label) = "en")
           }
       }
     `)
@@ -85,10 +164,11 @@ function App (): JSX.Element {
   return (
     <Box className={s.container}>
       <TextField
-        label='Wikidata entity URL or ID'
+        label='Wikidata IRI (with or without prefix)'
         value={userInput}
         onChange={e => setUserInput(e.target.value)}
-        onKeyDown={e => e.key === 'Enter' && makeRequest()}
+        onKeyDown={e => e.key === 'Enter' && handleUserInput()}
+        placeholder='wd:Q19399674'
         className={s.textfield}
         sx={t => ({ '.MuiInputBase-input': { bgcolor: t.palette.background.paper } })}
       />
@@ -98,15 +178,7 @@ function App (): JSX.Element {
         loading={loading}
         error={error}
         forceExpanded
-        prefixes={{
-          wd: 'http://www.wikidata.org/entity/',
-          wdt: 'http://www.wikidata.org/prop/direct/',
-          wikibase: 'http://wikiba.se/ontology#',
-          p: 'http://www.wikidata.org/prop/',
-          rdf: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
-          rdfs: 'http://www.w3.org/2000/01/rdf-schema#',
-          xsd: 'http://www.w3.org/2001/XMLSchema#'
-        }}
+        prefixes={wikidataPrefixes}
       />
     </Box>
   )
