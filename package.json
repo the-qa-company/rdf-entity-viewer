@@ -30,6 +30,7 @@
     "dev": "vite",
     "lint": "eslint -c .eslintrc.json src",
     "build": "tsc && vite build",
+    "buildGithubPage": "vite build -c vite.github-page.config.ts",
     "preview": "vite preview",
     "prepublishOnly": "npm run build && ./scripts/prepare-package.sh",
     "postpublish": "./scripts/restore-package.sh"

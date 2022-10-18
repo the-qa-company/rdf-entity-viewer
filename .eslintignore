@@ -1,2 +1,4 @@
 /vite.config.ts
+/vite.github-page.config.ts
 /dist/
+/dist-github-page/
