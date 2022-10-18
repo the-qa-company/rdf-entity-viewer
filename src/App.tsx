@@ -1,6 +1,10 @@
 import RdfEntityViewer, { RdfJson } from '@/lib/RdfEntityViewer'
-import { Box, TextField } from '@mui/material'
+import { Box, TextField, Typography } from '@mui/material'
 import { useCallback, useEffect, useState } from 'react'
+
+import logoTheQACompany from './res/logo-bgwhite.svg'
+import logoNPM from './res/npm.png'
+import logoGH from './res/github.png'
 
 import s from './App.module.scss'
 
@@ -163,6 +167,25 @@ function App (): JSX.Element {
 
   return (
     <Box className={s.container}>
+      <Box className={s.header}>
+        <a href='https://the-qa-company.com' target='_blank' rel='noreferrer' className={s.linkTheQACompany}>
+          <img src={logoTheQACompany} alt='The QA Company Logo' className={s.imgTheQACompany} />
+          <Typography variant='h3' sx={{ opacity: 0.9, fontSize: '32px' }}>
+            The QA Company
+          </Typography>
+        </a>
+        <Box className={s.rightLinks}>
+          <a href='https://www.npmjs.com/package/rdf-entity-viewer' target='_blank' rel='noreferrer'>
+            <img src={logoNPM} className={s.imgNPM} alt='NPM Logo' />
+          </a>
+          <a href='https://github.com/the-qa-company/rdf-entity-viewer' target='_blank' rel='noreferrer'>
+            <img src={logoGH} className={s.imgGH} alt='GitHub Logo' />
+          </a>
+        </Box>
+      </Box>
+      <Typography variant='h1' textAlign='center' fontSize='52px'>
+        RDF Entity Explorer
+      </Typography>
       <TextField
         label='Wikidata IRI (with or without prefix)'
         value={userInput}

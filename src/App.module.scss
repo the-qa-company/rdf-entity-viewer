@@ -8,4 +8,31 @@
     max-width: 100%;
     margin: 0 auto;
   }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 80px;
+
+    .linkTheQACompany {
+      text-decoration: inherit;
+      color: inherit;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      .imgTheQACompany {
+        height: 60px;
+      }
+    }
+
+    .rightLinks {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      .imgNPM, .imgGH {
+        height: 40px;
+        border-radius: 4px;
+      }
+    }
+  }
 }
