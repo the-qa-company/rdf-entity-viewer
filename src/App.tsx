@@ -43,12 +43,12 @@ const wikidataPrefixes = {
 }
 
 function App (): JSX.Element {
-  const [userInput, setUserInput] = useState('')
+  const [userInput, setUserInput] = useState('wd:Q100501108')
   const [iri, setIri] = useState<string>()
   const [error, setError] = useState<string>()
   const [loading, setLoading] = useState(false)
   const [data, setData] = useState<RdfJson>()
-  const [shouldAutoSend, setShouldAutoSend] = useState(false)
+  const [shouldAutoSend, setShouldAutoSend] = useState(true)
 
   // Read query from URL params
   useEffect(() => {
