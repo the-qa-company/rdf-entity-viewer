@@ -4,6 +4,8 @@ A React/MUI component to visualize and explore RDF entities.
 
 Check out the **demo** here: [https://the-qa-company.github.io/rdf-entity-viewer](https://the-qa-company.github.io/rdf-entity-viewer)
 
+![Screenshot of the app](https://raw.githubusercontent.com/the-qa-company/rdf-entity-viewer/main/res/demo-home.png)
+
 ## Getting started
 
 1) Make sure you have the peer dependencies installed, see `package.json` for precise information. Basically you have to install:
