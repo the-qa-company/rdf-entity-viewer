@@ -7,8 +7,10 @@ Check out the **demo** here: [https://the-qa-company.github.io/rdf-entity-viewer
 ## Getting started
 
 1) Make sure you have the peer dependencies installed, see `package.json` for precise information. Basically you have to install:
-    - React
-    - Material UI (with icons): [the mui guide](https://mui.com/material-ui/getting-started/installation/)
+    - React: `npm i react react-dom`
+      - See also: [Vite](https://vitejs.dev/) or [CRA](https://create-react-app.dev/)
+    - Material UI (with icons): `npm install @mui/material @emotion/react @emotion/styled @mui/icons-material`
+      - See also: [The MUI guide](https://mui.com/material-ui/getting-started/installation/)
 2) Install the library using `npm i rdf-entity-viewer`
 3) Import the stylesheet (preferably in the file that is your app entry point, e.g `main.tsx`, `App.js`, etc.) like that:
 
