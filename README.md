@@ -2,11 +2,13 @@
 
 A React/MUI component to visualize and explore RDF entities.
 
+Check out the **demo** here: [https://the-qa-company.github.io/rdf-entity-viewer](https://the-qa-company.github.io/rdf-entity-viewer)
+
 ## Getting started
 
-1) Make sure you have the peer dependencies installed, see `package.json`. Basically you have to install:
+1) Make sure you have the peer dependencies installed, see `package.json` for precise information. Basically you have to install:
     - React
-    - Material UI (with icons)
+    - Material UI (with icons): [the mui guide](https://mui.com/material-ui/getting-started/installation/)
 2) Install the library using `npm i rdf-entity-viewer`
 3) Import the stylesheet (preferably in the file that is your app entry point, e.g `main.tsx`, `App.js`, etc.) like that:
 
@@ -22,23 +24,42 @@ import 'rdf-entity-viewer/dist/style.css'
 
 ```tsx
 // file: MyAwesomeComponent.tsx
-
 import RdfEntityViewer from 'rdf-entity-viewer'
-import { Box } from '@mui/material'
 
-function MyAwesomeComponent (): JSX.Element {
-    return (
-        <Box>
-            <RdfEntityViewer
-                iri='http://the-qa-company.com/plant2'
-                label='Plant 2'
-            />
-        </Box>
-    )
+function MyAwesomeComponent(): JSX.Element {
+  return (
+    <RdfEntityViewer
+      // The IRI of the entity we want to display
+      iri="http://www.wikidata.org/entity/Q100501108"
+      // The data in the rdf+json format
+      data={{
+        "http://www.wikidata.org/entity/Q100501108": {
+          "http://schema.org/dateModified": [
+            {
+              value: "2022-08-24T09:15:45Z",
+              type: "literal",
+              datatype: "http://www.w3.org/2001/XMLSchema#dateTime",
+            }
+          ],
+          "http://schema.org/description": [
+            {
+              value: "Company specialised in Question Answering technologies",
+              type: "literal",
+              lang: "en",
+            },
+            {
+              value: "bedrijf uit Frankrijk",
+              type: "literal",
+              lang: "nl",
+            }
+          ]
+        }
+      }}
+    />
+  )
 }
 
 export default MyAwesomeComponent
-
 ```
 
 
@@ -58,3 +79,6 @@ A CI has been setup on `main`, it reads the version from `package.json` and if i
 1) Creates a new tag on git (e.g. "v1.4.12")
 2) Publishes the package on npm
 
+<hr style="margin-top: 20px; margin-bottom: 20px">
+
+Made with ♥&ensp;by The QA Company
