@@ -4,9 +4,9 @@ import { CopyIRIButton } from './CopyButton'
 import { useViewerContext } from './viewer-context'
 import Objects from './Objects'
 import RetractButton from './RetractButton'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { PredicateContext, PredicateContextI } from './predicate-context'
-import { formatIRI } from './format'
+import { formatIRI, getLabel } from './format'
 
 import s from './Predicate.module.scss'
 
@@ -34,6 +34,11 @@ function Predicate (props: Props): JSX.Element {
     setHowManyVisibleObjects
   }
 
+  const [label, setLabel] = useState<string>()
+  useEffect(() => {
+    setLabel(getLabel(viewerCtx, predicate))
+  }, [viewerCtx, predicate])
+
   return (
     <PredicateContext.Provider value={contextValue}>
       <Box className={s.container}>
@@ -42,7 +47,7 @@ function Predicate (props: Props): JSX.Element {
           <Box className={s.content}>
             <Box className={s.sticky}>
               <CopyIRIButton value={predicate} />
-              <LinkComponent href={predicate}>
+              <LinkComponent href={predicate} label={label}>
                 {formatIRI(viewerCtx, predicate)}
               </LinkComponent>
             </Box>

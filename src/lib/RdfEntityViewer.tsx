@@ -142,7 +142,7 @@ function RdfEntityViewer (props: Props): JSX.Element {
               {showHeaderTitle && (
                 <>
                   <CopyIRIButton bigger value={iri!} />
-                  <LinkComponent href={iri!}>
+                  <LinkComponent href={iri!} label={label}>
                     {label !== undefined ? label : formatIRI(contextValue, iri!)}
                   </LinkComponent>
                 </>

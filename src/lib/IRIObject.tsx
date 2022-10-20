@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { CopyIRIButton } from './CopyButton'
-import { formatIRI } from './format'
+import { formatIRI, getLabel } from './format'
 import { Object } from './rdf-json'
 import { useViewerContext } from './viewer-context'
 
@@ -23,18 +23,23 @@ function IRIObject (props: Props): JSX.Element {
     img.src = object.value
   }, [])
 
+  const [label, setLabel] = useState<string>()
+  useEffect(() => {
+    setLabel(getLabel(viewerCtx, object.value))
+  }, [viewerCtx, object.value])
+
   return (
     <span style={{ whiteSpace: 'nowrap' }}>
       {isImg
         ? (
-          <LinkComponent href={object.value}>
+          <LinkComponent href={object.value} label={label}>
             <img src={object.value} alt={object.value} style={{ maxWidth: '200px', maxHeight: '200px' }} />
           </LinkComponent>
           )
         : (
           <>
             <CopyIRIButton value={object.value} />
-            <LinkComponent href={object.value}>
+            <LinkComponent href={object.value} label={label}>
               {formatIRI(viewerCtx, object.value)}
             </LinkComponent>
           </>

@@ -3,6 +3,7 @@ import { PropsWithChildren } from 'react'
 
 interface Props extends PropsWithChildren {
   href: string
+  label?: string
 }
 
 const DefaultLink = (props: Props): JSX.Element => {

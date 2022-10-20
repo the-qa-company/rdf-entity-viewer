@@ -1,6 +1,6 @@
 import { Box, TableCell, TableRow } from '@mui/material'
 import { CopyIRIButton } from './CopyButton'
-import { formatIRI } from './format'
+import { formatIRI, getLabel } from './format'
 import QualifierContainer from './QualifierContainer'
 import { Object as ObjectI, Predicates } from './rdf-json'
 import SimpleObject from './SimpleObject'
@@ -29,7 +29,7 @@ function Qualifiers (props: Props): JSX.Element | null {
         <TableRow key={predicate}>
           <TableCell sx={{ whiteSpace: 'nowrap', maxWidth: '500px', minWidth: '200px' }}>
             <CopyIRIButton value={predicate} />
-            <LinkComponent href={predicate}>
+            <LinkComponent href={predicate} label={getLabel(viewerCtx, predicate)}>
               {formatIRI(viewerCtx, predicate)}
             </LinkComponent>
           </TableCell>
