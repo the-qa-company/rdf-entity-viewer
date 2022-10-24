@@ -6,6 +6,10 @@ Check out the **demo** here: [https://the-qa-company.github.io/rdf-entity-viewer
 
 ![Screenshot of the app](https://raw.githubusercontent.com/the-qa-company/rdf-entity-viewer/main/res/demo-home.png)
 
+## Description
+
+The RDF Entity Viewer allows developers to easily display RDF data and allows users to quickly view the properties and values associated with an entity. For instance, let's imagine that we explore the entity "The QA Company", you will see the property "Official Website" and the associated value "www.the-qa-company.com". You may want to know more about what an "Official Website" is, to do that you can click on the link. Depending on your needs, you can configure the link so it opens in the viewer itself to have a smooth navigation or in the wikidata entity page for instance. The RDF Entity Viewer provides a modern UI to improve the readability and discoverability of your RDF data.
+
 ## Getting started
 
 1) Make sure you have the peer dependencies installed, see `package.json` for precise information. Basically you have to install:
