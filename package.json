@@ -19,7 +19,7 @@
     "type": "git",
     "url": "https://github.com/the-qa-company/rdf-entity-viewer"
   },
-  "version": "0.0.33",
+  "version": "0.0.34",
   "files": [
     "dist"
   ],

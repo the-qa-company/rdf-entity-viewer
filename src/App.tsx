@@ -43,21 +43,23 @@ const wikidataPrefixes = {
 }
 
 function App (): JSX.Element {
-  const [userInput, setUserInput] = useState('wd:Q100501108')
+  const [userInput, setUserInput] = useState('')
   const [iri, setIri] = useState<string>()
   const [error, setError] = useState<string>()
   const [loading, setLoading] = useState(false)
   const [data, setData] = useState<RdfJson>()
-  const [shouldAutoSend, setShouldAutoSend] = useState(true)
+  const [shouldAutoSend, setShouldAutoSend] = useState(false)
 
   // Read query from URL params
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
     const query = params.get('query')
     if (query !== null) {
-      setShouldAutoSend(true)
       setUserInput(query)
+    } else {
+      setUserInput('wd:Q100501108')
     }
+    setShouldAutoSend(true)
   }, [])
 
   // Set IRI from user input
