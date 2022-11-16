@@ -4,7 +4,7 @@ import {
 } from '@mui/material'
 import { RdfJson } from './rdf-json'
 import { mergeClasses } from './common-hooks'
-import { CopyIRIButton } from './CopyButton'
+import { CopyIRIButton, CopyButton } from './CopyButton'
 import DefaultLink from './DefaultLink'
 import Body from './Body'
 import { ViewerContext, ViewerContextI } from './viewer-context'
@@ -183,4 +183,4 @@ function RdfEntityViewer (props: Props): JSX.Element {
 
 export default RdfEntityViewer
 
-export type { RdfJson }
+export type { RdfJson, CopyIRIButton, CopyButton }
