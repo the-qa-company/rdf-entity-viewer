@@ -182,5 +182,5 @@ function RdfEntityViewer (props: Props): JSX.Element {
 }
 
 export default RdfEntityViewer
-
-export type { RdfJson, CopyIRIButton, CopyButton }
+export { CopyButton, CopyIRIButton }
+export type { RdfJson }
