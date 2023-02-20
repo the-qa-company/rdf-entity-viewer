@@ -1,12 +1,11 @@
 import { Objects as ObjectsI, Object as ObjectI } from './rdf-json'
 import React, { useMemo } from 'react'
-import { stringToHashNumber } from './hash'
 import { useViewerContext } from './viewer-context'
 import Qualifiers from './Qualifiers'
 import SimpleObject from './SimpleObject'
 import { usePredicateContext } from './predicate-context'
 import SeeMoreButton from './SeeMoreButton'
-import { isStandardReifiedStatement } from './common'
+import { compareObjects, isStandardReifiedStatement } from './common'
 
 interface Props {
   objects: ObjectsI
@@ -15,14 +14,12 @@ interface Props {
 function Objects (props: Props): JSX.Element {
   const { objects } = props
 
-  const { data, labelIRIs } = useViewerContext()
+  const viewerCtx = useViewerContext()
+  const { data, labelIRIs } = viewerCtx
   if (data === undefined) throw new Error('Objects: data is undefined')
   const { howManyVisibleObjects, setHowManyVisibleObjects } = usePredicateContext()
 
-  // Values sorted by type
-  const sortedObjects = useMemo(() => objects.sort((a, b) => (
-    stringToHashNumber(a.type) - stringToHashNumber(b.type)
-  )), [objects])
+  const sortedObjects = useMemo(() => objects.sort((a, b) => compareObjects(viewerCtx, a, b)), [objects])
 
   // Make groups of objects based on whether they are bnodes or not
   const groups = useMemo(() => {

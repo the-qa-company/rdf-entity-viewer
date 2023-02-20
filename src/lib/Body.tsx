@@ -2,7 +2,7 @@ import { Alert, Box, Divider } from '@mui/material'
 import React, { useMemo } from 'react'
 import { useViewerContext } from './viewer-context'
 import Predicate from './Predicate'
-import { formatIRI } from './format'
+import { comparePredicates } from './common'
 
 function Body (): JSX.Element {
   const viewerCtx = useViewerContext()
@@ -13,12 +13,7 @@ function Body (): JSX.Element {
   const entries = useMemo(() => {
     if (predicates === undefined) return undefined
     return Object.entries(predicates)
-      // Sort predicates alphabetically
-      .sort(([a], [b]) => {
-        const fmtA = formatIRI(viewerCtx, a)
-        const fmtB = formatIRI(viewerCtx, b)
-        return fmtA.localeCompare(fmtB)
-      })
+      .sort(([a], [b]) => comparePredicates(viewerCtx, a, b))
   }, [predicates])
 
   if (entries === undefined) {

@@ -1,4 +1,6 @@
 import { Box, TableCell, TableRow } from '@mui/material'
+import { useMemo } from 'react'
+import { compareObjects, comparePredicates } from './common'
 import { CopyIRIButton } from './CopyButton'
 import { formatIRI, getLabel } from './format'
 import QualifierContainer from './QualifierContainer'
@@ -20,7 +22,10 @@ function Qualifiers (props: Props): JSX.Element | null {
   const predicates: Predicates | undefined = data[qualifierObject.value]
   if (predicates === undefined) return null
 
-  const predicateKeys = Object.keys(predicates)
+  const predicateKeys = useMemo(() => {
+    return Object.keys(predicates)
+      .sort((a, b) => comparePredicates(viewerCtx, a, b))
+  }, [predicates])
 
   return (
     <QualifierContainer>
@@ -33,7 +38,7 @@ function Qualifiers (props: Props): JSX.Element | null {
             </LinkComponent>
           </TableCell>
           <TableCell>
-            {predicates[predicate].map((object, i) => (
+            {predicates[predicate].sort((a, b) => compareObjects(viewerCtx, a, b)).map((object, i) => (
               <Box key={i}>
                 <SimpleObject object={object} noContainer />
               </Box>
