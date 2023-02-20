@@ -7,25 +7,24 @@ import SimpleObject from './SimpleObject'
 import { useViewerContext } from './viewer-context'
 
 interface Props {
-  bnode: ObjectI
+  object: ObjectI
 }
 
 function Qualifiers (props: Props): JSX.Element | null {
-  const { bnode } = props
-  if (bnode.type !== 'bnode') throw new Error('Qualifiers only supports bnodes')
+  const { object: qualifierObject } = props
 
   const viewerCtx = useViewerContext()
   const { data, LinkComponent } = viewerCtx
   if (data === undefined) throw new Error('Qualifiers requires data')
 
-  const bnodeData: Predicates | undefined = data[bnode.value]
-  if (bnodeData === undefined) return null
+  const predicates: Predicates | undefined = data[qualifierObject.value]
+  if (predicates === undefined) return null
 
-  const predicates = Object.keys(bnodeData)
+  const predicateKeys = Object.keys(predicates)
 
   return (
     <QualifierContainer>
-      {predicates.map((predicate) => (
+      {predicateKeys.map((predicate) => (
         <TableRow key={predicate}>
           <TableCell sx={{ whiteSpace: 'nowrap', maxWidth: '500px', minWidth: '200px' }}>
             <CopyIRIButton value={predicate} />
@@ -34,11 +33,9 @@ function Qualifiers (props: Props): JSX.Element | null {
             </LinkComponent>
           </TableCell>
           <TableCell>
-            {bnodeData[predicate].map((object, i) => (
+            {predicates[predicate].map((object, i) => (
               <Box key={i}>
-                {object.type === 'bnode'
-                  ? object.value
-                  : <SimpleObject object={object} noContainer />}
+                <SimpleObject object={object} noContainer />
               </Box>
             ))}
           </TableCell>

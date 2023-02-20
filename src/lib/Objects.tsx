@@ -6,6 +6,7 @@ import Qualifiers from './Qualifiers'
 import SimpleObject from './SimpleObject'
 import { usePredicateContext } from './predicate-context'
 import SeeMoreButton from './SeeMoreButton'
+import { isStandardReifiedStatement } from './common'
 
 interface Props {
   objects: ObjectsI
@@ -14,7 +15,8 @@ interface Props {
 function Objects (props: Props): JSX.Element {
   const { objects } = props
 
-  const { data } = useViewerContext()
+  const { data, labelIRIs } = useViewerContext()
+  if (data === undefined) throw new Error('Objects: data is undefined')
   const { howManyVisibleObjects, setHowManyVisibleObjects } = usePredicateContext()
 
   // Values sorted by type
@@ -63,8 +65,8 @@ function Objects (props: Props): JSX.Element {
   return (
     <>
       {visibleObjects.map((object, objectIndex): JSX.Element => (
-        object.type === 'bnode'
-          ? <Qualifiers key={objectIndex} bnode={object} />
+        isStandardReifiedStatement(data, object, labelIRIs)
+          ? <Qualifiers key={objectIndex} object={object} />
           : <SimpleObject key={objectIndex} object={object} />
       ))}
 

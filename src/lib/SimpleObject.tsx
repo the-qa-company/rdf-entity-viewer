@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react'
+import BNodeObject from './BNodeObject'
 import IRIObject from './IRIObject'
 import LiteralObject from './LiteralObject'
 import ObjectContainer from './ObjectContainer'
@@ -11,7 +12,6 @@ interface Props {
 
 function SimpleObject (props: Props): JSX.Element {
   const { object, noContainer = false } = props
-  if (object.type === 'bnode') throw new Error('SimpleObject does not support bnodes')
 
   const Enveloppe = useMemo(() => noContainer ? React.Fragment : ObjectContainer, [noContainer])
 
@@ -23,6 +23,10 @@ function SimpleObject (props: Props): JSX.Element {
 
       {object.type === 'literal' && (
         <LiteralObject object={object} />
+      )}
+
+      {object.type === 'bnode' && (
+        <BNodeObject object={object} />
       )}
     </Enveloppe>
   )
