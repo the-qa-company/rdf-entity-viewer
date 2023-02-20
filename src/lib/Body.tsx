@@ -2,15 +2,23 @@ import { Alert, Box, Divider } from '@mui/material'
 import React, { useMemo } from 'react'
 import { useViewerContext } from './viewer-context'
 import Predicate from './Predicate'
+import { formatIRI } from './format'
 
 function Body (): JSX.Element {
-  const { data, iri } = useViewerContext()
+  const viewerCtx = useViewerContext()
+  const { data, iri } = viewerCtx
   if (iri === undefined) throw new Error('Body: context is missing information')
 
   const predicates = useMemo(() => data?.[iri], [data])
   const entries = useMemo(() => {
     if (predicates === undefined) return undefined
     return Object.entries(predicates)
+      // Sort predicates alphabetically
+      .sort(([a], [b]) => {
+        const fmtA = formatIRI(viewerCtx, a)
+        const fmtB = formatIRI(viewerCtx, b)
+        return fmtA.localeCompare(fmtB)
+      })
   }, [predicates])
 
   if (entries === undefined) {
